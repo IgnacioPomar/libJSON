@@ -1,0 +1,3 @@
+links with useful documentation:
+https://www.json.org/
+https://github.com/stleary/JSON-java
