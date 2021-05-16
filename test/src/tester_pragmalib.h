@@ -16,6 +16,6 @@
 
 // Libraries the project needs
 #pragma comment(lib, "TinyCppUnit" END_LIB_STD)
-//#pragma comment(lib, "libJSON" END_LIB_STD)
+#pragma comment(lib, "libJSON" END_LIB_STD)
 
 #endif // _PRAGMA_LIB_TESTER_H_
