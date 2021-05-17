@@ -4,30 +4,30 @@
 
 void JSONArray::put (int value)
 {
-	container->push_front (std::make_unique<JSONInt> (value));
+	container->emplace_back (std::make_unique<JSONInt> (value));
 }
 
 LIBJSON_API void JSONArray::put (double value)
 {
-	container->push_front (std::make_unique<JSONDouble> (value));
+	container->emplace_back (std::make_unique<JSONDouble> (value));
 }
 
 
 void JSONArray::put (const char * value)
 {
 	std::string str (value);
-	container->push_front (std::make_unique<JSONString> (str));
+	container->emplace_back (std::make_unique<JSONString> (str));
 }
 
 void JSONArray::put (JSONArray& arr)
 {
-	container->emplace_front (std::make_unique<JSONArray> (arr));
+	container->emplace_back (std::make_unique<JSONArray> (arr));
 }
 
 
 void JSONArray::put (JSONObject& obj)
 {
-	container->emplace_front (std::make_unique<JSONObject> (obj));
+	container->emplace_back (std::make_unique<JSONObject> (obj));
 }
 
 

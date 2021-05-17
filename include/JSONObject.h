@@ -8,10 +8,13 @@
 #ifndef _JSON_OBJECT_
 #define _JSON_OBJECT_
 
+#include <unordered_map>
+
 #include "libJSON_cfg.h"
 #include "libJSON.h"
 
 
+typedef std::unordered_map<std::string, PtrJSONBase> ObjContainer;
 
 class  JSONObject : public JSONBase
 {

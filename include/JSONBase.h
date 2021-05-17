@@ -8,8 +8,7 @@
 #ifndef _JSON_BASE_
 #define _JSON_BASE_
 
-#include <unordered_map>
-#include <forward_list>
+
 #include <string>
 #include <memory>
 
@@ -22,13 +21,13 @@ class  JSONArray;
 class LIBJSON_API JSONBase
 {
 public:
-	virtual std::string toString() const = 0;
+	virtual std::string toString () const = 0;
 
 };
 
 typedef std::unique_ptr<JSONBase> PtrJSONBase;
-typedef std::forward_list<PtrJSONBase> ArrContainer;
-typedef std::unordered_map<std::string, PtrJSONBase> ObjContainer;
+
+
 
 
 
