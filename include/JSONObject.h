@@ -18,15 +18,16 @@ class  JSONObject : public JSONBase
 private:
 	std::shared_ptr<ObjContainer> container;
 public:
-	LIBJSON_API JSONObject(const JSONObject& other);
-	LIBJSON_API JSONObject();
+	LIBJSON_API JSONObject (const JSONObject& other);
+	LIBJSON_API JSONObject ();
 
-	LIBJSON_API std::string toString() const;
+	LIBJSON_API std::string toString () const;
 
-	LIBJSON_API void put(const char * key, int value);
-	LIBJSON_API void put(const char* key, const char * value);
-	LIBJSON_API void put(const char* key, JSONArray& arr);
-	LIBJSON_API void put(const char * key, JSONObject& obj);
+	LIBJSON_API void put (const char * key, int value);
+	LIBJSON_API void put (const char * key, double value);
+	LIBJSON_API void put (const char* key, const char * value);
+	LIBJSON_API void put (const char* key, JSONArray& arr);
+	LIBJSON_API void put (const char * key, JSONObject& obj);
 
 };
 

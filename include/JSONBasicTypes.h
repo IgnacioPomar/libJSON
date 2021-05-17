@@ -1,4 +1,4 @@
-/*********************************************************************************************
+﻿/*********************************************************************************************
 *	Name		: JSONBasicTypes.h
 *	Description	: Keeps a named array
 ********************************************************************************************/
@@ -17,8 +17,17 @@ class LIBJSON_LOCAL JSONInt : public JSONBase
 private:
 	int value;
 public:
-	JSONInt(int value);
-	std::string toString() const;
+	JSONInt (int value);
+	std::string toString () const;
+};
+
+class LIBJSON_LOCAL JSONDouble : public JSONBase
+{
+private:
+	double value;
+public:
+	JSONDouble (double value);
+	std::string toString () const;
 };
 
 class LIBJSON_LOCAL JSONString : public JSONBase
@@ -26,10 +35,8 @@ class LIBJSON_LOCAL JSONString : public JSONBase
 private:
 	std::string value;
 public:
-	JSONString(std::string & value);
-	std::string toString() const;
-
-
+	JSONString (std::string & value);
+	std::string toString () const;
 };
 
 

@@ -1,34 +1,39 @@
-#include "libJSON.h"
+﻿#include "libJSON.h"
 
-void JSONObject::put(const char* key, const char * value)
+void JSONObject::put (const char* key, const char * value)
 {
-	std::string str(value);
-	container->emplace(key, std::make_unique<JSONString>(str));
+	std::string str (value);
+	container->emplace (key, std::make_unique<JSONString> (str));
 }
 
 
-void JSONObject::put(const char* key, int value)
+void JSONObject::put (const char* key, int value)
 {
-	container->emplace(key, std::make_unique<JSONInt>(value));
+	container->emplace (key, std::make_unique<JSONInt> (value));
 }
 
-void JSONObject::put(const char* key, JSONArray& arr)
+LIBJSON_API void JSONObject::put (const char * key, double value)
 {
-	container->emplace(key, std::make_unique<JSONArray>(arr));
+	container->emplace (key, std::make_unique<JSONDouble> (value));
 }
 
-void JSONObject::put(const char* key, JSONObject& obj)
+void JSONObject::put (const char* key, JSONArray& arr)
 {
-	container->emplace(key, std::make_unique<JSONObject>(obj));
+	container->emplace (key, std::make_unique<JSONArray> (arr));
+}
+
+void JSONObject::put (const char* key, JSONObject& obj)
+{
+	container->emplace (key, std::make_unique<JSONObject> (obj));
 }
 
 
-JSONObject::JSONObject()
+JSONObject::JSONObject ()
 {
-	this->container = std::make_shared<ObjContainer>();
+	this->container = std::make_shared<ObjContainer> ();
 }
 
-JSONObject::JSONObject(const JSONObject& other)
+JSONObject::JSONObject (const JSONObject& other)
 {
 	this->container = other.container;
 }
@@ -38,16 +43,15 @@ JSONObject::JSONObject(const JSONObject& other)
 
 
 
-std::string JSONObject::toString() const
+std::string JSONObject::toString () const
 {
 	std::string retVal = "{";
 	std::string sep = "";
 	for (const auto& kv : *container)
 	{
-		retVal.append(sep).append("\"" + kv.first + "\":").append(kv.second->toString());
+		retVal.append (sep).append ("\"" + kv.first + "\":").append (kv.second->toString ());
 		sep = ",";
 	}
-	retVal.append("}");
+	retVal.append ("}");
 	return retVal;
 }
-
