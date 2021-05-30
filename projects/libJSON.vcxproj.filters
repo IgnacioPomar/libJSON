@@ -23,6 +23,9 @@
     <ClCompile Include="..\src\JSONObject.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\JSONParser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\libJSON_cfg.h">
@@ -41,6 +44,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\JSONBasicTypes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JSONParser.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

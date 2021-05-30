@@ -11,7 +11,7 @@
 #include <unordered_map>
 
 #include "libJSON_cfg.h"
-#include "libJSON.h"
+#include "JSONBase.h"
 
 
 typedef std::unordered_map<std::string, PtrJSONBase> ObjContainer;

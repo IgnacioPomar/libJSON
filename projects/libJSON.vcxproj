@@ -169,12 +169,14 @@
     <ClCompile Include="..\src\JSONArray.cpp" />
     <ClCompile Include="..\src\JSONBasicTypes.cpp" />
     <ClCompile Include="..\src\JSONObject.cpp" />
+    <ClCompile Include="..\src\JSONParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\JSONArray.h" />
     <ClInclude Include="..\include\JSONBase.h" />
     <ClInclude Include="..\include\JSONBasicTypes.h" />
     <ClInclude Include="..\include\JSONObject.h" />
+    <ClInclude Include="..\include\JSONParser.h" />
     <ClInclude Include="..\include\libJSON.h" />
     <ClInclude Include="..\include\libJSON_cfg.h" />
   </ItemGroup>

@@ -1,6 +1,8 @@
 ﻿
 
-#include "libJSON.h"
+#include "JSONBasicTypes.h"
+#include "JSONObject.h"
+#include "JSONArray.h"
 
 void JSONArray::put (int value)
 {

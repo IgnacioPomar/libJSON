@@ -13,4 +13,6 @@
 #include "JSONObject.h"
 #include "JSONBasicTypes.h"
 
+#include "JSONParser.h"
+
 #endif //_LIB_JSON_

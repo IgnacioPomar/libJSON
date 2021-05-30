@@ -10,7 +10,7 @@
 #include <list>
 
 #include "libJSON_cfg.h"
-#include "libJSON.h"
+#include "JSONBase.h"
 
 
 typedef std::list<PtrJSONBase> ArrContainer;
