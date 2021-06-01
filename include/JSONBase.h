@@ -30,6 +30,8 @@ typedef std::unique_ptr<JSONBase> PtrJSONBase;
 
 
 
+enum JSON_ERR_CODE { SUCCESS, NO_MATCHING_OBJECT, BAD_FORMAT_UNEXPECTED_VALUE, NOT_IMPLEMENTED };
+
 
 
 

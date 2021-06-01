@@ -177,6 +177,7 @@
     <ClInclude Include="..\include\JSONBasicTypes.h" />
     <ClInclude Include="..\include\JSONObject.h" />
     <ClInclude Include="..\include\JSONParser.h" />
+    <ClInclude Include="..\include\JSONParserPriv.h" />
     <ClInclude Include="..\include\libJSON.h" />
     <ClInclude Include="..\include\libJSON_cfg.h" />
   </ItemGroup>

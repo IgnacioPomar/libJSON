@@ -49,5 +49,8 @@
     <ClInclude Include="..\include\JSONParser.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\JSONParserPriv.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
