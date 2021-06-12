@@ -176,6 +176,90 @@ std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
 	return retVal;
 }
 
+std::string JSONParserPriv::getNumber (const char*& cursor, JSON_ERR_CODE& errCode, bool& isInt)
+{
+	//Esta funcion se encarga exclusivamente de "agrupar" el número y saber que tipo de número es
+	std::string retVal = "";
+
+	//Debe contener al menos un caracter en la parte entera
+	errCode = JSON_ERR_CODE::WRONG_NUMBER_FORMAT;
+
+	isInt = true;
+
+	//Opcionalmente puede empezar por el signo -
+	if (cursor[0] == '-')
+	{
+		retVal.push_back ('-');
+		cursor++;
+	}
+
+	//Primero viene la parte entera
+	while (std::isdigit (cursor[0]))
+	{
+		retVal.push_back (cursor[0]);
+		cursor++;
+
+		errCode = JSON_ERR_CODE::SUCCESS;
+	}
+
+
+	//Ahora viene la fracción si es el caso
+	if (cursor[0] != '.')
+	{
+		return retVal;
+	}
+	else
+	{
+		isInt = false;
+		retVal.push_back ('.');
+		cursor++;
+
+		//Si existe la parte de fracción, debe existir al menos un dígito
+		errCode = JSON_ERR_CODE::WRONG_NUMBER_FORMAT;
+	}
+
+	while (std::isdigit (cursor[0]))
+	{
+		retVal.push_back (cursor[0]);
+		cursor++;
+
+		errCode = JSON_ERR_CODE::SUCCESS;
+	}
+
+	//Ahora viene la parte exponencial, de ser el caso
+	if (cursor[0] != 'e' && cursor[0] != 'E')
+	{
+		return retVal;
+	}
+	else
+	{
+		isInt = false;
+		retVal.push_back ('E');
+		cursor++;
+
+		//Si existe la parte de exponente, debe existir al menos un dígito
+		errCode = JSON_ERR_CODE::WRONG_NUMBER_FORMAT;
+	}
+
+	//Puede ser que exista (o que no), signo para el exponente
+	if (cursor[0] == '+' || cursor[0] == '-')
+	{
+		retVal.push_back (cursor[0]);
+		cursor++;
+	}
+
+	while (std::isdigit (cursor[0]))
+	{
+		retVal.push_back (cursor[0]);
+		cursor++;
+
+		errCode = JSON_ERR_CODE::SUCCESS;
+	}
+
+	
+	return retVal;
+}
+
 
 std::string JSONParserPriv::getUTF8Char (std::string uChar)
 {
