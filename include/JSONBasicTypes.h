@@ -21,6 +21,23 @@ public:
 	std::string toString () const;
 };
 
+class LIBJSON_LOCAL JSONBool : public JSONBase
+{
+private:
+	bool value;
+public:
+	JSONBool (bool value);
+	std::string toString () const;
+};
+
+class LIBJSON_LOCAL JSONNull : public JSONBase
+{
+private:
+public:
+	std::string toString () const;
+};
+
+
 class LIBJSON_LOCAL JSONDouble : public JSONBase
 {
 private:

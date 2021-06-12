@@ -39,6 +39,75 @@ bool JSONParserPriv::skipWhitespace (const char *& cursor)
 }
 
 
+/**
+* check if we hava a null string and advance the cursor till the end
+*/
+bool JSONParserPriv::checkNull (const char *& cursor, JSON_ERR_CODE & errCode)
+{
+	const char * tmp = strNull;
+
+	errCode = JSON_ERR_CODE::SUCCESS;
+	while (tmp[0] != 0)
+	{
+		if (tmp[0] != cursor[0])
+		{
+			errCode = JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE;
+			return false;
+		}
+		else
+		{
+			cursor++;
+			tmp++;
+		}
+	}
+
+	return true;
+}
+
+bool JSONParserPriv::checkBool (const char *& cursor, JSON_ERR_CODE & errCode)
+{
+	bool retVal = (cursor[0] == 't');
+	const char * tmp = (retVal) ? strTrue : strFalse;
+
+	errCode = JSON_ERR_CODE::SUCCESS;
+	while (tmp[0] != 0)
+	{
+		if (tmp[0] != cursor[0])
+		{
+			errCode = JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE;
+			return false;
+		}
+		else
+		{
+			cursor++;
+			tmp++;
+		}
+	}
+
+	return retVal;
+}
+
+
+
+JSON_ERR_CODE JSONParserPriv::addNewBoolean (JSONArray & base, const char *& cursor)
+{
+	JSON_ERR_CODE retVal;
+	base.put (checkBool (cursor, retVal));
+	return retVal;
+}
+
+
+JSON_ERR_CODE JSONParserPriv::addNewNull (JSONArray & base, const char *& cursor)
+{
+	JSON_ERR_CODE retVal;
+	if (checkNull (cursor, retVal))
+	{
+		base.put (0); //In C++ it will be 0 anyway...
+	}
+	return retVal;
+}
+
+
 JSON_ERR_CODE JSONParserPriv::addNewArray (JSONArray & base, const char *& cursor)
 {
 	JSONArray jarr;

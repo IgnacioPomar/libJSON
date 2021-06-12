@@ -28,3 +28,14 @@ std::string JSONString::toString () const
 {
 	return "\"" + value + "\"";
 }
+
+
+std::string JSONNull::toString () const
+{
+	return std::string ("null");
+}
+
+JSONBool::JSONBool (bool value)
+{
+	this->value = value;
+}

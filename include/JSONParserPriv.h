@@ -8,6 +8,7 @@
 #ifndef _JSON_PARSER_PRIVATE_
 #define _JSON_PARSER_PRIVATE_
 
+#include "JSONBasicTypes.h"
 #include "libJSON_cfg.h"
 #include "JSONBase.h"
 
@@ -16,8 +17,14 @@
 
 class LIBJSON_LOCAL JSONParserPriv
 {
+private:
+	static constexpr const char * strNull = "null";
+	static constexpr const char * strTrue = "true";
+	static constexpr const char * strFalse = "false";
 public:
 	static bool skipWhitespace (const char *& cursor);
+	static bool checkNull (const char *& cursor, JSON_ERR_CODE & errCode);
+	static bool checkBool (const char *& cursor, JSON_ERR_CODE & errCode);
 
 	static JSON_ERR_CODE parse (JSONArray& base, const char *& cursor);
 
