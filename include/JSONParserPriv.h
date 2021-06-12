@@ -25,6 +25,9 @@ public:
 	static bool skipWhitespace (const char *& cursor);
 	static bool checkNull (const char *& cursor, JSON_ERR_CODE & errCode);
 	static bool checkBool (const char *& cursor, JSON_ERR_CODE & errCode);
+	static std::string getStr (const char*& cursor, JSON_ERR_CODE& errCode);
+	static std::string getUTF8Char (std::string uChar);
+	static std::string getNumber (const char*& cursor, JSON_ERR_CODE& errCode, bool &isInt);
 
 	static JSON_ERR_CODE parse (JSONArray& base, const char *& cursor);
 

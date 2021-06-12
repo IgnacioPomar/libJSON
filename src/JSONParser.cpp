@@ -88,6 +88,101 @@ bool JSONParserPriv::checkBool (const char *& cursor, JSON_ERR_CODE & errCode)
 }
 
 
+std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
+{
+	std::string retVal = "";
+
+	//Un string debe empezar por comillas y terminar por comillas:
+	if (cursor[0] != '"')
+	{
+		errCode=  JSON_ERR_CODE::WRONG_STRING_FORMAT;
+		return retVal;
+	}
+
+	//Avanzamos para ir al siguiente caracter
+	cursor++;
+	errCode = JSON_ERR_CODE::SUCCESS;
+
+
+	bool insideScape = false;
+	int remainingUChars = 0;
+	std::string uchar;
+
+	//Comenzamos el parseo del string
+	while (cursor[0] != 0 && cursor[0] != '"' && errCode == JSON_ERR_CODE::SUCCESS)
+	{
+		if (insideScape)
+		{
+			insideScape = false;
+			switch (cursor[0])
+			{
+			case '"': retVal.push_back ('"'); break;
+			case '\\': retVal.push_back ('\\'); break;
+			case '/': retVal.push_back ('/'); break;
+			case 'b': retVal.push_back ('b'); break;
+			case 'f': retVal.push_back ('f'); break;
+			case 'n': retVal.push_back ('n'); break;
+			case 'r': retVal.push_back ('r'); break;
+			case 't': retVal.push_back ('t'); break;
+			case 'u': 
+				remainingUChars = 4;
+				uchar.clear ();
+				break;
+			default:
+				errCode = JSON_ERR_CODE::WRONG_STRING_FORMAT;
+				break;
+			}
+		}
+		else if (remainingUChars > 0)
+		{
+			if (std::isxdigit (cursor[0]))
+			{
+				uchar.push_back (cursor[0]);
+				remainingUChars--;
+
+				if (remainingUChars == 0)
+				{
+					retVal.append (getUTF8Char (uchar));
+				}
+			}
+			else
+			{
+				errCode = JSON_ERR_CODE::WRONG_STRING_FORMAT;
+			}
+		}
+		else
+		{
+			if (cursor[0] == '\\')
+			{
+				insideScape = true;
+			}
+			else
+			{
+				retVal.push_back (cursor[0]);
+			}
+		}
+		cursor++;
+	}
+
+	if (insideScape || remainingUChars > 0 || cursor[0] != '"')
+	{
+		errCode = JSON_ERR_CODE::WRONG_STRING_FORMAT;
+	}
+	else
+	{
+		cursor++;
+	}
+
+	return retVal;
+}
+
+
+std::string JSONParserPriv::getUTF8Char (std::string uChar)
+{
+	//TODO: convertir de caracter unicode puro a utf8
+	return std::string ("");
+}
+
 
 JSON_ERR_CODE JSONParserPriv::addNewBoolean (JSONArray & base, const char *& cursor)
 {
@@ -112,7 +207,7 @@ JSON_ERR_CODE JSONParserPriv::addNewArray (JSONArray & base, const char *& curso
 {
 	JSONArray jarr;
 	JSON_ERR_CODE retVal = parse (jarr, cursor);
-	if (retVal == SUCCESS)
+	if (retVal == JSON_ERR_CODE::SUCCESS)
 	{
 		base.put (jarr);
 	}
@@ -125,7 +220,7 @@ JSON_ERR_CODE JSONParserPriv::addNewObject (JSONArray & base, const char *& curs
 	JSONObject jObj;
 	JSON_ERR_CODE retVal = parse (jObj, cursor);
 
-	if (retVal == SUCCESS)
+	if (retVal == JSON_ERR_CODE::SUCCESS)
 	{
 		base.put (jObj);
 	}
@@ -138,11 +233,11 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 	bool waitingForValue = true;
 	if (cursor[0] != '[')
 	{
-		return NO_MATCHING_OBJECT;
+		return JSON_ERR_CODE::NO_MATCHING_OBJECT;
 	}
 
 
-	JSON_ERR_CODE retVal = SUCCESS;
+	JSON_ERR_CODE retVal = JSON_ERR_CODE::SUCCESS;
 	while ((++cursor)[0] != 0 && cursor[0] != ']')
 	{
 		if (skipWhitespace (cursor))
@@ -174,7 +269,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 				break;
 			}
 
-			if (retVal != SUCCESS)
+			if (retVal != JSON_ERR_CODE::SUCCESS)
 			{
 				return retVal;
 			}
@@ -189,11 +284,11 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 			}
 			else
 			{
-				return BAD_FORMAT_UNEXPECTED_VALUE;
+				return JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE;
 			}
 		}
 
 	}
 
-	return SUCCESS;
+	return JSON_ERR_CODE::SUCCESS;
 }
