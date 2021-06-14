@@ -170,6 +170,7 @@
     <ClCompile Include="..\src\JSONBasicTypes.cpp" />
     <ClCompile Include="..\src\JSONObject.cpp" />
     <ClCompile Include="..\src\JSONParser.cpp" />
+    <ClCompile Include="..\src\JSONParseUchar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\JSONArray.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="..\include\JSONObject.h" />
     <ClInclude Include="..\include\JSONParser.h" />
     <ClInclude Include="..\include\JSONParserPriv.h" />
+    <ClInclude Include="..\include\JSONParseUchar.h" />
     <ClInclude Include="..\include\libJSON.h" />
     <ClInclude Include="..\include\libJSON_cfg.h" />
   </ItemGroup>

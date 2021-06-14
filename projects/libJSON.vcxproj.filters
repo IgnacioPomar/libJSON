@@ -26,6 +26,9 @@
     <ClCompile Include="..\src\JSONParser.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\JSONParseUchar.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\libJSON_cfg.h">
@@ -50,6 +53,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\JSONParserPriv.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\JSONParseUchar.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

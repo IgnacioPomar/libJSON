@@ -1,5 +1,7 @@
 ﻿
+#include <cctype>
 
+#include "JSONParseUchar.h"
 #include "JSONBasicTypes.h"
 #include "JSONObject.h"
 #include "JSONArray.h"
@@ -95,7 +97,7 @@ std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
 	//Un string debe empezar por comillas y terminar por comillas:
 	if (cursor[0] != '"')
 	{
-		errCode=  JSON_ERR_CODE::WRONG_STRING_FORMAT;
+		errCode = JSON_ERR_CODE::WRONG_STRING_FORMAT;
 		return retVal;
 	}
 
@@ -124,7 +126,7 @@ std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
 			case 'n': retVal.push_back ('n'); break;
 			case 'r': retVal.push_back ('r'); break;
 			case 't': retVal.push_back ('t'); break;
-			case 'u': 
+			case 'u':
 				remainingUChars = 4;
 				uchar.clear ();
 				break;
@@ -142,7 +144,7 @@ std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
 
 				if (remainingUChars == 0)
 				{
-					retVal.append (getUTF8Char (uchar));
+					retVal.append (JSONParseUchar::getUTF8Char (uchar));
 				}
 			}
 			else
@@ -256,16 +258,11 @@ std::string JSONParserPriv::getNumber (const char*& cursor, JSON_ERR_CODE& errCo
 		errCode = JSON_ERR_CODE::SUCCESS;
 	}
 
-	
+
 	return retVal;
 }
 
 
-std::string JSONParserPriv::getUTF8Char (std::string uChar)
-{
-	//TODO: convertir de caracter unicode puro a utf8
-	return std::string ("");
-}
 
 
 JSON_ERR_CODE JSONParserPriv::addNewBoolean (JSONArray & base, const char *& cursor)
