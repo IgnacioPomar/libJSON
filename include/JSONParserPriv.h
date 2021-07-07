@@ -30,6 +30,8 @@ public:
 	static std::string getStr (const char*& cursor, JSON_ERR_CODE& errCode);
 	static std::string getNumber (const char*& cursor, JSON_ERR_CODE& errCode, bool &isInt);
 
+
+	//----- JSONArray -----
 	static JSON_ERR_CODE parse (JSONArray& base, const char *& cursor);
 
 	static JSON_ERR_CODE addNewArray (JSONArray& base, const char *& cursor);
@@ -40,9 +42,15 @@ public:
 	static JSON_ERR_CODE addNewNull (JSONArray& base, const char *& cursor);
 
 
+	//----- JSONObject -----
+	static JSON_ERR_CODE parse (JSONObject& object, const char *& cursor);
 
-
-	static JSON_ERR_CODE parse (JSONObject& base, const char *& cursor);
+	static JSON_ERR_CODE addNewArray (JSONObject& object, const char* key, const char*& cursor);
+	static JSON_ERR_CODE addNewObject (JSONObject& object, const char* key, const char*& cursor);
+	static JSON_ERR_CODE addNewString (JSONObject& object, const char* key, const char*& cursor);
+	static JSON_ERR_CODE addNewNumber (JSONObject& object, const char* key, const char*& cursor);
+	static JSON_ERR_CODE addNewBoolean (JSONObject& object, const char* key, const char*& cursor);
+	static JSON_ERR_CODE addNewNull (JSONObject& object, const char* key, const char*& cursor);
 };
 
 

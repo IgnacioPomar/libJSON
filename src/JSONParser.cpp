@@ -235,7 +235,6 @@ std::string JSONParserPriv::getNumber (const char*& cursor, JSON_ERR_CODE& errCo
 	}
 	else
 	{
-		isInt = false;
 		retVal.push_back ('E');
 		cursor++;
 
@@ -262,6 +261,42 @@ std::string JSONParserPriv::getNumber (const char*& cursor, JSON_ERR_CODE& errCo
 	return retVal;
 }
 
+// ----------------------------------------------------------------------
+// ----------------------------- JSONArray -----------------------------
+// ----------------------------------------------------------------------
+
+JSON_ERR_CODE JSONParserPriv::addNewString (JSONArray& base, const char*& cursor)
+{
+	JSON_ERR_CODE retVal;
+	std::string str = getStr (cursor, retVal);
+	base.put (str.c_str());
+	return retVal;
+}
+
+
+JSON_ERR_CODE JSONParserPriv::addNewNumber (JSONArray& base, const char*& cursor)
+{
+	JSON_ERR_CODE retVal;
+
+	bool isInt;
+	std::string number = getNumber (cursor, retVal, isInt);
+
+	if (retVal == JSON_ERR_CODE::SUCCESS)
+	{
+
+		if (isInt)
+		{
+			base.put (std::stoi (number));
+		}
+		else
+		{
+			base.put (std::stod (number));
+		}
+	}
+
+	
+	return retVal;
+}
 
 
 
@@ -371,5 +406,191 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 
 	}
 
-	return JSON_ERR_CODE::SUCCESS;
+	return (cursor[0] == ']')? JSON_ERR_CODE::SUCCESS: JSON_ERR_CODE::UNEXPECTED_END_OF_STRING;
+}
+
+// ----------------------------------------------------------------------
+// ----------------------------- JSONObject -----------------------------
+// ----------------------------------------------------------------------
+
+
+
+JSON_ERR_CODE JSONParserPriv::addNewString (JSONObject& object, const char* key, const char*& cursor)
+{
+	JSON_ERR_CODE retVal;
+	std::string str = getStr (cursor, retVal);
+	object.put (key,str.c_str ());
+	return retVal;
+}
+
+
+JSON_ERR_CODE JSONParserPriv::addNewNumber (JSONObject& object, const char* key, const char*& cursor)
+{
+	JSON_ERR_CODE retVal;
+
+	bool isInt;
+	std::string number = getNumber (cursor, retVal, isInt);
+
+	if (retVal == JSON_ERR_CODE::SUCCESS)
+	{
+
+		if (isInt)
+		{
+			object.put (key,std::stoi (number));
+		}
+		else
+		{
+			object.put (key,std::stod (number));
+		}
+	}
+
+
+	return retVal;
+}
+
+
+
+JSON_ERR_CODE JSONParserPriv::addNewBoolean (JSONObject& object, const char* key, const char*& cursor)
+{
+	JSON_ERR_CODE retVal;
+	object.put (key, checkBool (cursor, retVal));
+	return retVal;
+}
+
+
+JSON_ERR_CODE JSONParserPriv::addNewNull (JSONObject& object, const char* key, const char*& cursor)
+{
+	JSON_ERR_CODE retVal;
+	if (checkNull (cursor, retVal))
+	{
+		object.put (key,0); //In C++ it will be 0 anyway...
+	}
+	return retVal;
+}
+
+
+JSON_ERR_CODE JSONParserPriv::addNewArray (JSONObject& object, const char* key, const char*& cursor)
+{
+	JSONArray jarr;
+	JSON_ERR_CODE retVal = parse (jarr, cursor);
+	if (retVal == JSON_ERR_CODE::SUCCESS)
+	{
+		object.put (key,jarr);
+	}
+
+	return retVal;
+}
+
+JSON_ERR_CODE JSONParserPriv::addNewObject (JSONObject& object, const char* key, const char*& cursor)
+{
+	JSONObject jObj;
+	JSON_ERR_CODE retVal = parse (jObj, cursor);
+
+	if (retVal == JSON_ERR_CODE::SUCCESS)
+	{
+		object.put (key,jObj);
+	}
+
+	return retVal;
+}
+
+
+JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
+{
+	bool waitingForKey = true;
+	bool waitingForValue = false;
+	bool keyIsFilled = false;
+
+	std::string key;
+
+	if (cursor[0] != '{')
+	{
+		return JSON_ERR_CODE::NO_MATCHING_OBJECT;
+	}
+
+
+	JSON_ERR_CODE retVal = JSON_ERR_CODE::SUCCESS;
+	while ((++cursor)[0] != 0 && cursor[0] != '}')
+	{
+		if (skipWhitespace (cursor))
+		{
+			//Nothing to do
+		}
+		else if (waitingForKey)
+		{
+			key = getStr (cursor, retVal);
+			waitingForKey = false;
+
+			if (retVal != JSON_ERR_CODE::SUCCESS)
+			{
+				return retVal;
+			}
+		}
+		else if (waitingForValue)
+		{
+			switch (cursor[0])
+			{
+			case '[':
+				retVal = addNewArray (object, key.c_str(), cursor);
+				break;
+			case '{':
+				retVal = addNewObject (object, key.c_str (), cursor);
+				break;
+			case '"':
+				retVal = addNewString (object, key.c_str (), cursor);
+				break;
+			case 't':
+			case 'f':
+				retVal = addNewBoolean (object, key.c_str (), cursor);
+				break;
+			case 'n':
+				retVal = addNewNull (object, key.c_str (), cursor);
+				break;
+			default:
+				retVal = addNewNumber (object, key.c_str (), cursor);
+				break;
+			}
+
+			if (retVal != JSON_ERR_CODE::SUCCESS)
+			{
+				return retVal;
+			}
+
+			keyIsFilled = true;
+			waitingForValue = false;
+		}
+		else
+		{
+			//If it is neither a whitespace, nor the key, nor the value, then 
+			switch (cursor[0])
+			{
+			case ',':
+				if (keyIsFilled)
+				{
+					waitingForKey = true;
+					keyIsFilled = false;
+				}
+				else
+				{
+					return JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE;
+				}
+				break;
+			case ':':
+				if (!waitingForKey)
+				{
+					waitingForValue = true;
+				}
+				else
+				{
+					return JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE;
+				}
+				break;
+			default:
+				return JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE;
+				break;
+			}
+		}
+	}
+
+	return (cursor[0] == '}') ? JSON_ERR_CODE::SUCCESS : JSON_ERR_CODE::UNEXPECTED_END_OF_STRING;
 }
