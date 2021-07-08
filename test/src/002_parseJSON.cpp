@@ -10,48 +10,29 @@
 
 #include "libJSON.h"
 
+#include "testerSimpleDta.h"
+
 
 UNIT_TEST_CASE (TestLoadJSON)
-{
-	//Test simple Object
+{	
+	//Parse string and check the results
 	{
-		//std::ifstream ifs ("simpleObject.json", std::ios::in);
-		//std::string str (std::istreambuf_iterator<char>{ifs}, {});
-
-		const char* jsonTxt = "{\"arr\":[{\"lid\":0,\"x2\":0},{\"lid\":1,\"x2\":2},{\"lid\":2,\"x2\":4},{\"lid\":3,\"x2\":6},{\"lid\":4,\"x2\":8}]}";
-
 		JSONObject jobj;
 
 		UNIT_CHECK (JSON_ERR_CODE::SUCCESS == JSONParser::parse (jobj, jsonTxt));
+		UNIT_CHECK (0 == jobj.toString ().compare (jsonTxt));
+	}
 
 
-		printf (jobj.toString ().c_str ());
-
-
-
-		/*
-		JSONObject obj (str.c_str ());
-		JSONArray ordenes = obj.getJSONArray ("ord");
-
-	for (int i = 0; i < ordenes.length (); i++)
+	//Load the same strings but with spaces
 	{
-		JSONObject jsonOrden = ordenes.getJSONObject (i);
-		String symbol = jsonOrden.getString ("symbol");
-		Integer id = jsonOrden.getInt ("id");
+		JSONObject jobj;
+
+		std::ifstream ifs ("../test/data/simpleDtaWithSpaces.json", std::ios::in);
+		std::string str (std::istreambuf_iterator<char>{ifs}, {});
+
+		UNIT_CHECK (JSON_ERR_CODE::SUCCESS == JSONParser::parse (jobj, str.c_str()));
+		UNIT_CHECK (0 == jobj.toString ().compare (jsonTxt));
 	}
-
-	UNIT_CHECK (props.getInt ("key", 5) == 10);
-
-		*/
-
-	}
-
-
-
-
-
-
-
-
 
 }

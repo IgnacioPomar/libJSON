@@ -31,6 +31,9 @@
     <ClInclude Include="..\test\src\tester_pragmalib.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\test\src\testerSimpleDta.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\test\data\simpleArray.json">
@@ -43,6 +46,9 @@
       <Filter>testData</Filter>
     </None>
     <None Include="..\test\data\withAllDataTypes.json">
+      <Filter>testData</Filter>
+    </None>
+    <None Include="..\test\data\simpleDtaWithSpaces.json">
       <Filter>testData</Filter>
     </None>
   </ItemGroup>

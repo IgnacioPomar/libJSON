@@ -167,11 +167,13 @@
     <ClCompile Include="..\test\src\maintester.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\test\src\testerSimpleDta.h" />
     <ClInclude Include="..\test\src\tester_pragmalib.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\test\data\arrayOfObjects.json" />
     <None Include="..\test\data\simpleArray.json" />
+    <None Include="..\test\data\simpleDtaWithSpaces.json" />
     <None Include="..\test\data\simpleObject.json" />
     <None Include="..\test\data\withAllDataTypes.json" />
   </ItemGroup>
