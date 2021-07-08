@@ -22,9 +22,7 @@ UNIT_TEST_CASE (TestLoadJSON)
 
 		JSONObject jobj;
 
-		JSON_ERR_CODE jsonErr = JSONParser::parse (jobj, jsonTxt);
-
-		UNIT_CHECK (jsonErr == JSON_ERR_CODE::SUCCESS);
+		UNIT_CHECK (JSON_ERR_CODE::SUCCESS == JSONParser::parse (jobj, jsonTxt));
 
 
 		printf (jobj.toString ().c_str ());

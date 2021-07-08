@@ -352,9 +352,10 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 		return JSON_ERR_CODE::NO_MATCHING_OBJECT;
 	}
 
+	cursor++;
 
 	JSON_ERR_CODE retVal = JSON_ERR_CODE::SUCCESS;
-	while ((++cursor)[0] != 0 && cursor[0] != ']')
+	while ((cursor)[0] != 0 && cursor[0] != ']')
 	{
 		if (skipWhitespace (cursor))
 		{
@@ -397,6 +398,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 			if (cursor[0] == ',')
 			{
 				waitingForValue = true;
+				cursor++;
 			}
 			else
 			{
@@ -406,7 +408,15 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 
 	}
 
-	return (cursor[0] == ']')? JSON_ERR_CODE::SUCCESS: JSON_ERR_CODE::UNEXPECTED_END_OF_STRING;
+	if (cursor[0] == ']')
+	{
+		cursor++;
+		return JSON_ERR_CODE::SUCCESS;
+	}
+	else
+	{
+		return JSON_ERR_CODE::UNEXPECTED_END_OF_STRING;
+	}
 }
 
 // ----------------------------------------------------------------------
@@ -508,9 +518,10 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 		return JSON_ERR_CODE::NO_MATCHING_OBJECT;
 	}
 
+	cursor++;
 
 	JSON_ERR_CODE retVal = JSON_ERR_CODE::SUCCESS;
-	while ((++cursor)[0] != 0 && cursor[0] != '}')
+	while ((cursor)[0] != 0 && cursor[0] != '}')
 	{
 		if (skipWhitespace (cursor))
 		{
@@ -569,6 +580,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 				{
 					waitingForKey = true;
 					keyIsFilled = false;
+					cursor++;
 				}
 				else
 				{
@@ -579,6 +591,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 				if (!waitingForKey)
 				{
 					waitingForValue = true;
+					cursor++;
 				}
 				else
 				{
@@ -592,5 +605,14 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 		}
 	}
 
-	return (cursor[0] == '}') ? JSON_ERR_CODE::SUCCESS : JSON_ERR_CODE::UNEXPECTED_END_OF_STRING;
+
+	if (cursor[0] == '}')
+	{
+		cursor++;
+		return JSON_ERR_CODE::SUCCESS;
+	}
+	else
+	{
+		return JSON_ERR_CODE::UNEXPECTED_END_OF_STRING;
+	}
 }
