@@ -13,12 +13,22 @@ std::string JSONInt::toString () const
 	return  std::to_string (value);
 }
 
+JSON_TYPE JSONInt::getType () const
+{
+	return JSON_TYPE::JINT;
+}
+
 
 JSONDouble::JSONDouble (double value) : value (value) {}
 
 std::string JSONDouble::toString () const
 {
 	return  std::to_string (value);
+}
+
+JSON_TYPE JSONDouble::getType () const
+{
+	return JSON_TYPE::JDOUBLE;
 }
 
 
@@ -29,11 +39,22 @@ std::string JSONString::toString () const
 	return "\"" + value + "\"";
 }
 
+JSON_TYPE JSONString::getType () const
+{
+	return JSON_TYPE::JSTRING;
+}
+
 
 std::string JSONNull::toString () const
 {
 	return std::string ("null");
 }
+
+JSON_TYPE JSONNull::getType () const
+{
+	return JSON_TYPE::JNULL;
+}
+
 
 std::string JSONBool::toString () const
 {
@@ -44,4 +65,9 @@ std::string JSONBool::toString () const
 JSONBool::JSONBool (bool value)
 {
 	this->value = value;
+}
+
+JSON_TYPE JSONBool::getType () const
+{
+	return JSON_TYPE::JBOOL;
 }

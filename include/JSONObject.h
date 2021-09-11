@@ -16,7 +16,7 @@
 
 typedef std::unordered_map<std::string, PtrJSONBase> ObjContainer;
 
-class  JSONObject : public JSONBase
+class JSONObject : public JSONBase
 {
 private:
 	std::shared_ptr<ObjContainer> container;
@@ -25,6 +25,7 @@ public:
 	LIBJSON_API JSONObject ();
 
 	LIBJSON_API std::string toString () const;
+	LIBJSON_API JSON_TYPE getType () const;
 
 	LIBJSON_API void put (const char * key, int value);
 	LIBJSON_API void put (const char * key, double value);

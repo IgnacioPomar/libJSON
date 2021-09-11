@@ -48,6 +48,13 @@ std::string JSONArray::toString () const
 }
 
 
+JSON_TYPE JSONArray::getType () const
+{
+	return JSON_TYPE::JARR;
+}
+
+
+
 
 JSONArray::JSONArray ()
 {

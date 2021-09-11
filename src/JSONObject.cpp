@@ -57,3 +57,10 @@ std::string JSONObject::toString () const
 	retVal.append ("}");
 	return retVal;
 }
+
+
+
+JSON_TYPE JSONObject::getType () const
+{
+	return JSON_TYPE::JOBJ;
+}

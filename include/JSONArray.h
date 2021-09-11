@@ -24,6 +24,7 @@ public:
 	LIBJSON_API JSONArray ();
 
 	LIBJSON_API std::string toString () const;
+	JSON_TYPE getType () const;
 
 	LIBJSON_API void put (int value);
 	LIBJSON_API void put (double value);
