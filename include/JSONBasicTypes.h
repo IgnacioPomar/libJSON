@@ -15,8 +15,9 @@
 class LIBJSON_LOCAL JSONInt : public JSONBase
 {
 private:
-	int value;
 public:
+	int value;
+
 	JSONInt (int value);
 	std::string toString () const;
 	JSON_TYPE getType () const;
@@ -25,8 +26,10 @@ public:
 class LIBJSON_LOCAL JSONBool : public JSONBase
 {
 private:
-	bool value;
 public:
+	bool value;
+
+
 	JSONBool (bool value);
 	std::string toString () const;
 	JSON_TYPE getType () const;
@@ -44,8 +47,9 @@ public:
 class LIBJSON_LOCAL JSONDouble : public JSONBase
 {
 private:
-	double value;
 public:
+	double value;
+
 	JSONDouble (double value);
 	std::string toString () const;
 	JSON_TYPE getType () const;
@@ -53,9 +57,9 @@ public:
 
 class LIBJSON_LOCAL JSONString : public JSONBase
 {
-private:
-	std::string value;
 public:
+	std::string value;
+
 	JSONString (std::string & value);
 	std::string toString () const;
 	JSON_TYPE getType () const;

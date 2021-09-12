@@ -25,6 +25,11 @@ public:
 	virtual JSON_TYPE getType () const = 0;
 	virtual std::string toString () const = 0;
 
+	int getAsInt () const;
+	bool getAsBool () const;
+	double getAsDouble () const;
+	const char * getAsString () const;
+
 };
 
 typedef std::shared_ptr<JSONBase> PtrJSONBase;

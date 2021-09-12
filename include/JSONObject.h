@@ -33,6 +33,8 @@ public:
 	LIBJSON_API void put (const char* key, JSONArray& arr);
 	LIBJSON_API void put (const char * key, JSONObject& obj);
 
+	LIBJSON_API PtrJSONBase get (const char * key);
+
 };
 
 #endif //_JSON_OBJECT_

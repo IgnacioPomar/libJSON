@@ -24,13 +24,15 @@ public:
 	LIBJSON_API JSONArray ();
 
 	LIBJSON_API std::string toString () const;
-	JSON_TYPE getType () const;
+	LIBJSON_API JSON_TYPE getType () const;
 
 	LIBJSON_API void put (int value);
 	LIBJSON_API void put (double value);
 	LIBJSON_API void put (const char * value);
 	LIBJSON_API void put (JSONArray& arr);
 	LIBJSON_API void put (JSONObject& obj);
+
+	//LIBJSON_API PtrJSONBase get (int idx);
 
 };
 
