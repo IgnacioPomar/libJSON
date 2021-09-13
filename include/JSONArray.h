@@ -8,6 +8,7 @@
 #ifndef _JSON_ARRAY_
 #define _JSON_ARRAY_
 #include <list>
+#include <iterator>
 
 #include "libJSON_cfg.h"
 #include "JSONBase.h"
@@ -33,6 +34,25 @@ public:
 	LIBJSON_API void put (JSONObject& obj);
 
 	//LIBJSON_API PtrJSONBase get (int idx);
+
+	//---------------- Para Iterar por la clase --------------
+	struct Iterator
+	{
+		Iterator (ArrContainer::iterator it);
+
+		LIBJSON_API PtrJSONBase & operator*() const;
+		//PtrJSONBase * operator->();
+		LIBJSON_API Iterator& operator++();
+		//Iterator operator++(int) { Iterator tmp = *this; ++(*this); return tmp; }
+		LIBJSON_API friend bool operator== (const Iterator& a, const Iterator& b);
+		LIBJSON_API friend bool operator!= (const Iterator& a, const Iterator& b);
+
+	private:
+		ArrContainer::iterator it;
+	};
+
+	LIBJSON_API  Iterator begin ();
+	LIBJSON_API  Iterator end ();
 
 };
 

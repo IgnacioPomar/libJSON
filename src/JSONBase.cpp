@@ -4,7 +4,8 @@
 ********************************************************************************************/
 
 #include <memory>
-
+#include "JSONArray.h"
+#include "JSONObject.h"
 #include "JSONBasicTypes.h"
 //#include "JSONBase.h" //alreadey included in JSONBasicTypes
 
@@ -58,5 +59,34 @@ double JSONBase::getAsDouble () const
 	else
 	{
 		return 0.0;
+	}
+}
+
+
+
+JSONArray JSONBase::getAsArray () const
+{
+	if (this->getType () == JSON_TYPE::JARR)
+	{
+		const JSONArray * arr = static_cast <const JSONArray *> (this);
+		return JSONArray (*arr);
+	}
+	else
+	{
+		return JSONArray ();
+	}
+}
+
+
+JSONObject JSONBase::getAsObject () const
+{
+	if (this->getType () == JSON_TYPE::JOBJ)
+	{
+		const JSONObject * obj = static_cast <const JSONObject *> (this);
+		return JSONObject (*obj);
+	}
+	else
+	{
+		return JSONObject ();
 	}
 }

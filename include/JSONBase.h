@@ -30,6 +30,11 @@ public:
 	double getAsDouble () const;
 	const char * getAsString () const;
 
+	JSONArray getAsArray () const;
+	JSONObject getAsObject () const;
+
+
+
 };
 
 typedef std::shared_ptr<JSONBase> PtrJSONBase;

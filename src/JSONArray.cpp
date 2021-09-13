@@ -65,3 +65,44 @@ JSONArray::JSONArray (const JSONArray& other)
 {
 	this->container = other.container;
 }
+
+
+
+//---------------- Allow iterating over the hidden container --------------
+//See  https://internalpointers.com/post/writing-custom-iterators-modern-cpp
+JSONArray::Iterator JSONArray::begin ()
+{
+	return JSONArray::Iterator (container->begin ());
+}
+
+JSONArray::Iterator JSONArray::end ()
+{
+	return JSONArray::Iterator (container->end ());
+}
+
+
+PtrJSONBase & JSONArray::Iterator::operator*() const
+{
+	return *it;
+}
+
+JSONArray::Iterator & JSONArray::Iterator::operator++()
+{
+	it++;
+	return *this;
+}
+
+bool operator==(const JSONArray::Iterator & a, const JSONArray::Iterator & b)
+{
+	return a.it == b.it;
+}
+
+bool operator!=(const JSONArray::Iterator & a, const JSONArray::Iterator & b)
+{
+	return a.it != b.it;
+}
+
+
+JSONArray::Iterator::Iterator (ArrContainer::iterator it) : it (it)
+{
+}
