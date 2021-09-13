@@ -23,7 +23,7 @@
     <ClCompile Include="..\test\src\002_parseJSON.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\test\src\003_unicodeSpport.cpp">
+    <ClCompile Include="..\test\src\003_parseTypesJSON.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

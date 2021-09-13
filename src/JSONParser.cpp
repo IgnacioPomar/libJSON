@@ -269,7 +269,7 @@ JSON_ERR_CODE JSONParserPriv::addNewString (JSONArray& base, const char*& cursor
 {
 	JSON_ERR_CODE retVal;
 	std::string str = getStr (cursor, retVal);
-	base.put (str.c_str());
+	base.put (str.c_str ());
 	return retVal;
 }
 
@@ -294,7 +294,7 @@ JSON_ERR_CODE JSONParserPriv::addNewNumber (JSONArray& base, const char*& cursor
 		}
 	}
 
-	
+
 	return retVal;
 }
 
@@ -313,7 +313,7 @@ JSON_ERR_CODE JSONParserPriv::addNewNull (JSONArray & base, const char *& cursor
 	JSON_ERR_CODE retVal;
 	if (checkNull (cursor, retVal))
 	{
-		base.put (0); //In C++ it will be 0 anyway...
+		base.putNull ();
 	}
 	return retVal;
 }
@@ -429,7 +429,7 @@ JSON_ERR_CODE JSONParserPriv::addNewString (JSONObject& object, const char* key,
 {
 	JSON_ERR_CODE retVal;
 	std::string str = getStr (cursor, retVal);
-	object.put (key,str.c_str ());
+	object.put (key, str.c_str ());
 	return retVal;
 }
 
@@ -446,11 +446,11 @@ JSON_ERR_CODE JSONParserPriv::addNewNumber (JSONObject& object, const char* key,
 
 		if (isInt)
 		{
-			object.put (key,std::stoi (number));
+			object.put (key, std::stoi (number));
 		}
 		else
 		{
-			object.put (key,std::stod (number));
+			object.put (key, std::stod (number));
 		}
 	}
 
@@ -473,7 +473,7 @@ JSON_ERR_CODE JSONParserPriv::addNewNull (JSONObject& object, const char* key, c
 	JSON_ERR_CODE retVal;
 	if (checkNull (cursor, retVal))
 	{
-		object.put (key,0); //In C++ it will be 0 anyway...
+		object.putNull (key);
 	}
 	return retVal;
 }
@@ -485,7 +485,7 @@ JSON_ERR_CODE JSONParserPriv::addNewArray (JSONObject& object, const char* key, 
 	JSON_ERR_CODE retVal = parse (jarr, cursor);
 	if (retVal == JSON_ERR_CODE::SUCCESS)
 	{
-		object.put (key,jarr);
+		object.put (key, jarr);
 	}
 
 	return retVal;
@@ -498,7 +498,7 @@ JSON_ERR_CODE JSONParserPriv::addNewObject (JSONObject& object, const char* key,
 
 	if (retVal == JSON_ERR_CODE::SUCCESS)
 	{
-		object.put (key,jObj);
+		object.put (key, jObj);
 	}
 
 	return retVal;
@@ -542,7 +542,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 			switch (cursor[0])
 			{
 			case '[':
-				retVal = addNewArray (object, key.c_str(), cursor);
+				retVal = addNewArray (object, key.c_str (), cursor);
 				break;
 			case '{':
 				retVal = addNewObject (object, key.c_str (), cursor);

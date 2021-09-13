@@ -163,7 +163,7 @@
   <ItemGroup>
     <ClCompile Include="..\test\src\001_CreateJSON.cpp" />
     <ClCompile Include="..\test\src\002_parseJSON.cpp" />
-    <ClCompile Include="..\test\src\003_unicodeSpport.cpp" />
+    <ClCompile Include="..\test\src\003_parseTypesJSON.cpp" />
     <ClCompile Include="..\test\src\maintester.cpp" />
   </ItemGroup>
   <ItemGroup>

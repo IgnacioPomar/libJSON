@@ -27,6 +27,8 @@ public:
 	LIBJSON_API std::string toString () const;
 	LIBJSON_API JSON_TYPE getType () const;
 
+	LIBJSON_API void putNull ();
+	LIBJSON_API void put (bool value);
 	LIBJSON_API void put (int value);
 	LIBJSON_API void put (double value);
 	LIBJSON_API void put (const char * value);

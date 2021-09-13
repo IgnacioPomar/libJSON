@@ -4,12 +4,24 @@
 #include "JSONObject.h"
 #include "JSONArray.h"
 
+
+void JSONArray::putNull ()
+{
+	container->emplace_back (std::make_shared<JSONNull> ());
+}
+
 void JSONArray::put (int value)
 {
 	container->emplace_back (std::make_shared<JSONInt> (value));
 }
 
-LIBJSON_API void JSONArray::put (double value)
+void JSONArray::put (bool value)
+{
+	container->emplace_back (std::make_shared<JSONBool> (value));
+}
+
+
+void JSONArray::put (double value)
 {
 	container->emplace_back (std::make_shared<JSONDouble> (value));
 }

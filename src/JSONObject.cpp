@@ -9,12 +9,23 @@ void JSONObject::put (const char* key, const char * value)
 }
 
 
+
+void JSONObject::putNull (const char* key)
+{
+	container->emplace (key, std::make_shared<JSONNull> ());
+}
+
+void JSONObject::put (const char* key, bool value)
+{
+	container->emplace (key, std::make_shared<JSONBool> (value));
+}
+
 void JSONObject::put (const char* key, int value)
 {
 	container->emplace (key, std::make_shared<JSONInt> (value));
 }
 
-LIBJSON_API void JSONObject::put (const char * key, double value)
+void JSONObject::put (const char * key, double value)
 {
 	container->emplace (key, std::make_shared<JSONDouble> (value));
 }
@@ -31,7 +42,7 @@ void JSONObject::put (const char* key, JSONObject& obj)
 
 
 
-LIBJSON_API PtrJSONBase JSONObject::get (const char * key)
+PtrJSONBase JSONObject::get (const char * key)
 {
 	auto search = container->find (key);
 	if (search != container->end ())

@@ -1,12 +1,26 @@
 {
-	"id": "0001",
-	"name": "Pizza",
-	"isYummy": true,
-	"price": 123.44,
-	"lastOvenError": null
-	"images" :
-		[{"url": "images/0001.jpg","width": 200,"height": 200},
-		 {"url": "images/0002.jpg","width": 32,"height": 32}
-		]
-		 
+  "id": "0001",
+  "name": "Pizza",
+  "isYummy": true,
+  "stock": 22,
+  "price": 123.44,
+  "lastOvenError": null,
+  "images": [
+    {
+      "url": "images/0001.jpg",
+      "width": 200,
+      "height": 200
+    },
+    {
+      "url": "images/0002.jpg",
+      "width": 32,
+      "height": 32
+    }
+  ],
+  "visual": {
+    "color": "red",
+    "value": "#f00"
+  }
+
+
 }
