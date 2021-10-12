@@ -100,9 +100,12 @@ UNIT_TEST_CASE (TestLoadErrors)
 
 	UNIT_CHECK (JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE == JSONParser::parse (jarr, "[\"abc\":123]"));
 	UNIT_CHECK (JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE == JSONParser::parse (jobj, "{\"abc\",123}"));
+	UNIT_CHECK (JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE == JSONParser::parse (jarr, "[\"abc\",123}"));
+	UNIT_CHECK (JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE == JSONParser::parse (jobj, "{\"abc\",123]"));
 
 	UNIT_CHECK (JSON_ERR_CODE::UNEXPECTED_END_OF_STRING == JSONParser::parse (jobj, "{\"abc\":123"));
 	UNIT_CHECK (JSON_ERR_CODE::UNEXPECTED_END_OF_STRING == JSONParser::parse (jarr, "[\"abc\",123"));
+
 
 
 }
