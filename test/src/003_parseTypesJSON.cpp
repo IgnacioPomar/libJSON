@@ -4,8 +4,6 @@
 ********************************************************************************************/
 
 #include <string>
-#include <fstream>
-#include <streambuf>
 #include <TinyCppUnit/TinyCppUnit.h>
 
 #include "libJSON.h"
@@ -17,10 +15,8 @@ UNIT_TEST_CASE (TestJSONTypes)
 {
 	JSONObject jobj;
 
-	std::ifstream ifs ("../test/data/withAllDataTypes.json", std::ios::in);
-	std::string str (std::istreambuf_iterator<char>{ifs}, {});
 
-	UNIT_REQUIRE (JSON_ERR_CODE::SUCCESS == JSONParser::parse (jobj, str.c_str ()));
+	UNIT_REQUIRE (JSON_ERR_CODE::SUCCESS == JSONParser::parseFromFile (jobj, "../test/data/withAllDataTypes.json"));
 
 
 	//Existing fields
