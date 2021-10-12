@@ -1,4 +1,13 @@
-﻿
+﻿/*********************************************************************************************
+*	Name		: JSONParser.cpp
+*	Description	: Utility class to parse strings
+********************************************************************************************/
+
+
+#include <fstream>		//used in parseFromFile
+#include <streambuf>	//used in parseFromFile
+
+
 #include <cctype>
 
 #include "JSONParseUchar.h"
@@ -10,20 +19,40 @@
 #include "JSONParserPriv.h"
 
 
-JSON_ERR_CODE JSONParser::parse (JSONArray & base, const char * jsonTxt)
+
+JSON_ERR_CODE JSONParser::parseFromFile (JSONBase & base, const char * jsonFileName)
 {
-	const char * cursor = jsonTxt;
-	return JSONParserPriv::parse (base, cursor);
+	std::ifstream ifs (jsonFileName, std::ios::in);
+	if (ifs.is_open ())
+	{
+		std::string str (std::istreambuf_iterator<char>{ifs}, {});
+		return parse (base, str.c_str ());
+	}
+	else
+	{
+		return JSON_ERR_CODE::FILE_ACCESS_ERROR;
+	}
+
 }
 
 
-JSON_ERR_CODE JSONParser::parse (JSONObject & base, const char * jsonTxt)
+
+JSON_ERR_CODE JSONParser::parse (JSONBase & base, const char * jsonTxt)
 {
 	const char * cursor = jsonTxt;
-	return JSONParserPriv::parse (base, cursor);
+	if (base.getType () == JSON_TYPE::JARR)
+	{
+		return JSONParserPriv::parse (static_cast<JSONArray&>(base), cursor);
+	}
+	else if (base.getType () == JSON_TYPE::JOBJ)
+	{
+		return JSONParserPriv::parse (static_cast<JSONObject&>(base), cursor);
+	}
+	else
+	{
+		return JSON_ERR_CODE::NOT_CONTAINER_TYPE;
+	}
 }
-
-
 
 /**
 * Advances the position till we find a non whitespace char

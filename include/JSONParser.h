@@ -17,8 +17,9 @@
 class LIBJSON_API JSONParser
 {
 public:
-	static JSON_ERR_CODE parse (JSONArray& base, const char * jsonTxt);
-	static JSON_ERR_CODE parse (JSONObject& base, const char * jsonTxt);
+	static JSON_ERR_CODE parse (JSONBase& base, const char * jsonTxt);
+
+	static JSON_ERR_CODE parseFromFile (JSONBase& base, const char * jsonFileName);
 };
 
 
