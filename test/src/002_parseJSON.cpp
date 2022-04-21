@@ -22,6 +22,7 @@ UNIT_TEST_CASE (TestLoadJSON)
 	{
 		JSONObject jobj;
 
+
 		UNIT_CHECK (JSON_ERR_CODE::SUCCESS == JSONParser::parse (jobj, jsonTxt));
 		UNIT_CHECK (0 == jobj.toString ().compare (jsonTxt));
 	}

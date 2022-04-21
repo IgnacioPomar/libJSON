@@ -20,6 +20,15 @@ class JSONObject : public JSONBase
 {
 private:
 	std::shared_ptr<ObjContainer> container;
+
+	using JSONBase::getAsObject;
+	using JSONBase::getAsArray;
+
+	using JSONBase::getAsString;
+	using JSONBase::getAsDouble;
+	using JSONBase::getAsBool;
+	using JSONBase::getAsInt;
+
 public:
 	LIBJSON_API JSONObject (const JSONObject& other);
 	LIBJSON_API JSONObject ();

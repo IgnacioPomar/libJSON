@@ -20,6 +20,14 @@ class  JSONArray : public JSONBase
 {
 private:
 	std::shared_ptr<ArrContainer> container;
+
+	using JSONBase::getAsArray;
+	using JSONBase::getAsObject;
+	using JSONBase::getAsBool;
+	using JSONBase::getAsDouble;
+	using JSONBase::getAsInt;
+	using JSONBase::getAsString;
+
 public:
 	LIBJSON_API JSONArray (const JSONArray& other);
 	LIBJSON_API JSONArray ();

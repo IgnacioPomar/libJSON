@@ -15,6 +15,13 @@
 class LIBJSON_LOCAL JSONInt : public JSONBase
 {
 private:
+	using JSONBase::getAsObject;
+	using JSONBase::getAsArray;
+
+	using JSONBase::getAsString;
+	using JSONBase::getAsDouble;
+	using JSONBase::getAsBool;
+	using JSONBase::getAsInt;
 public:
 	int value;
 
@@ -26,6 +33,13 @@ public:
 class LIBJSON_LOCAL JSONBool : public JSONBase
 {
 private:
+	using JSONBase::getAsObject;
+	using JSONBase::getAsArray;
+
+	using JSONBase::getAsString;
+	using JSONBase::getAsDouble;
+	using JSONBase::getAsBool;
+	using JSONBase::getAsInt;
 public:
 	bool value;
 
@@ -38,6 +52,13 @@ public:
 class LIBJSON_LOCAL JSONNull : public JSONBase
 {
 private:
+	using JSONBase::getAsObject;
+	using JSONBase::getAsArray;
+
+	using JSONBase::getAsString;
+	using JSONBase::getAsDouble;
+	using JSONBase::getAsBool;
+	using JSONBase::getAsInt;
 public:
 	std::string toString () const;
 	JSON_TYPE getType () const;
@@ -47,6 +68,13 @@ public:
 class LIBJSON_LOCAL JSONDouble : public JSONBase
 {
 private:
+	using JSONBase::getAsObject;
+	using JSONBase::getAsArray;
+
+	using JSONBase::getAsString;
+	using JSONBase::getAsDouble;
+	using JSONBase::getAsBool;
+	using JSONBase::getAsInt;
 public:
 	double value;
 
@@ -57,6 +85,14 @@ public:
 
 class LIBJSON_LOCAL JSONString : public JSONBase
 {
+private:
+	using JSONBase::getAsObject;
+	using JSONBase::getAsArray;
+
+	using JSONBase::getAsString;
+	using JSONBase::getAsDouble;
+	using JSONBase::getAsBool;
+	using JSONBase::getAsInt;
 public:
 	std::string value;
 
