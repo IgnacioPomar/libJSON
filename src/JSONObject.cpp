@@ -55,6 +55,34 @@ PtrJSONBase JSONObject::get (const char * key)
 	}
 }
 
+bool JSONObject::getBool (const char * key)
+{
+	return this->get (key)->getAsBool ();
+}
+int JSONObject::getInt (const char * key)
+{
+	return this->get (key)->getAsInt ();
+}
+double JSONObject::getDouble (const char * key)
+{
+	return this->get (key)->getAsDouble ();
+}
+const char * JSONObject::getString (const char * key)
+{
+	return this->get (key)->getAsString ();
+}
+
+JSONArray JSONObject::getArray (const char * key)
+{
+	return this->get (key)->getAsArray ();
+}
+
+JSONObject JSONObject::getObject (const char * key)
+{
+	return this->get (key)->getAsObject ();
+}
+
+
 
 JSONObject::JSONObject ()
 {

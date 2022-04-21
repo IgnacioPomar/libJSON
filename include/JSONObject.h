@@ -37,6 +37,13 @@ public:
 
 	LIBJSON_API PtrJSONBase get (const char * key);
 
+	LIBJSON_API bool getBool (const char * key);
+	LIBJSON_API int getInt (const char * key);
+	LIBJSON_API double getDouble (const char * key);
+	LIBJSON_API const char * getString (const char * key);
+	LIBJSON_API JSONArray getArray (const char * key);
+	LIBJSON_API JSONObject getObject (const char * key);
+
 };
 
 #endif //_JSON_OBJECT_

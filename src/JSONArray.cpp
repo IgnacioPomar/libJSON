@@ -79,6 +79,20 @@ JSONArray::JSONArray (const JSONArray& other)
 }
 
 
+JSONNull jsn;
+LIBJSON_API JSONBase & JSONArray::front ()
+{
+	// TODO: insertar una instrucción return aquí
+	if (container->size () > 0)
+	{
+		return *container->front ();
+	}
+	else
+	{
+		return jsn;
+	}
+}
+
 
 //---------------- Allow iterating over the hidden container --------------
 //See  https://internalpointers.com/post/writing-custom-iterators-modern-cpp
