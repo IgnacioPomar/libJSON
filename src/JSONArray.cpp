@@ -80,7 +80,7 @@ JSONArray::JSONArray (const JSONArray& other)
 
 
 JSONNull jsn;
-LIBJSON_API JSONBase & JSONArray::front ()
+JSONBase & JSONArray::front ()
 {
 	// TODO: insertar una instrucción return aquí
 	if (container->size () > 0)
@@ -92,6 +92,21 @@ LIBJSON_API JSONBase & JSONArray::front ()
 		return jsn;
 	}
 }
+
+
+PtrJSONBase JSONArray::get (int idx)
+{
+	auto l_front = container->begin ();
+	std::advance (l_front, 4);
+	return *l_front;
+}
+
+int JSONArray::length ()
+{
+	return (int)container->size ();
+}
+
+
 
 
 //---------------- Allow iterating over the hidden container --------------

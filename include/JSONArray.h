@@ -43,7 +43,8 @@ public:
 	LIBJSON_API void put (JSONArray& arr);
 	LIBJSON_API void put (JSONObject& obj);
 
-	//LIBJSON_API PtrJSONBase get (int idx);
+	LIBJSON_API PtrJSONBase get (int idx);
+	LIBJSON_API int length ();
 	LIBJSON_API JSONBase & front ();
 
 	//---------------- Para Iterar por la clase --------------
