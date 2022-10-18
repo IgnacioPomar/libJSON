@@ -56,6 +56,11 @@ double JSONBase::getAsDouble () const
 		const JSONDouble * obj = static_cast <const JSONDouble *> (this);
 		return obj->value;
 	}
+	else if (this->getType () == JSON_TYPE::JINT)
+	{
+		const JSONInt * obj = static_cast <const JSONInt *> (this);
+		return obj->value;
+	}
 	else
 	{
 		return 0.0;
