@@ -97,7 +97,7 @@ JSONBase & JSONArray::front ()
 PtrJSONBase JSONArray::get (int idx)
 {
 	auto l_front = container->begin ();
-	std::advance (l_front, 4);
+	std::advance (l_front, idx);
 	return *l_front;
 }
 
