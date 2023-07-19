@@ -40,6 +40,7 @@ JSON_ERR_CODE JSONParser::parseFromFile (JSONBase & base, const char * jsonFileN
 JSON_ERR_CODE JSONParser::parse (JSONBase & base, const char * jsonTxt)
 {
 	const char * cursor = jsonTxt;
+	JSONParserPriv::skipWhitespace (cursor);
 	if (base.getType () == JSON_TYPE::JARR)
 	{
 		return JSONParserPriv::parse (static_cast<JSONArray&>(base), cursor);
@@ -60,7 +61,7 @@ JSON_ERR_CODE JSONParser::parse (JSONBase & base, const char * jsonTxt)
 bool JSONParserPriv::skipWhitespace (const char *& cursor)
 {
 	bool retVal = false;
-	while (cursor[0] == ' ' || cursor[0] == '\t' || cursor[0] == '\r' || cursor[0] == '\n')
+	while (cursor [0] == ' ' || cursor [0] == '\t' || cursor [0] == '\r' || cursor [0] == '\n')
 	{
 		cursor++;
 		retVal = true;
@@ -78,9 +79,9 @@ bool JSONParserPriv::checkNull (const char *& cursor, JSON_ERR_CODE & errCode)
 	const char * tmp = strNull;
 
 	errCode = JSON_ERR_CODE::SUCCESS;
-	while (tmp[0] != 0)
+	while (tmp [0] != 0)
 	{
-		if (tmp[0] != cursor[0])
+		if (tmp [0] != cursor [0])
 		{
 			errCode = JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE;
 			return false;
@@ -97,13 +98,13 @@ bool JSONParserPriv::checkNull (const char *& cursor, JSON_ERR_CODE & errCode)
 
 bool JSONParserPriv::checkBool (const char *& cursor, JSON_ERR_CODE & errCode)
 {
-	bool retVal = (cursor[0] == 't');
+	bool retVal = (cursor [0] == 't');
 	const char * tmp = (retVal) ? strTrue : strFalse;
 
 	errCode = JSON_ERR_CODE::SUCCESS;
-	while (tmp[0] != 0)
+	while (tmp [0] != 0)
 	{
-		if (tmp[0] != cursor[0])
+		if (tmp [0] != cursor [0])
 		{
 			errCode = JSON_ERR_CODE::BAD_FORMAT_UNEXPECTED_VALUE;
 			return false;
@@ -124,7 +125,7 @@ std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
 	std::string retVal = "";
 
 	//Un string debe empezar por comillas y terminar por comillas:
-	if (cursor[0] != '"')
+	if (cursor [0] != '"')
 	{
 		errCode = JSON_ERR_CODE::WRONG_STRING_FORMAT;
 		return retVal;
@@ -140,12 +141,12 @@ std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
 	std::string uchar;
 
 	//Comenzamos el parseo del string
-	while (cursor[0] != 0 && cursor[0] != '"' && errCode == JSON_ERR_CODE::SUCCESS)
+	while (cursor [0] != 0 && cursor [0] != '"' && errCode == JSON_ERR_CODE::SUCCESS)
 	{
 		if (insideScape)
 		{
 			insideScape = false;
-			switch (cursor[0])
+			switch (cursor [0])
 			{
 			case '"': retVal.push_back ('"'); break;
 			case '\\': retVal.push_back ('\\'); break;
@@ -166,9 +167,9 @@ std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
 		}
 		else if (remainingUChars > 0)
 		{
-			if (std::isxdigit (cursor[0]))
+			if (std::isxdigit (cursor [0]))
 			{
-				uchar.push_back (cursor[0]);
+				uchar.push_back (cursor [0]);
 				remainingUChars--;
 
 				if (remainingUChars == 0)
@@ -183,19 +184,19 @@ std::string JSONParserPriv::getStr (const char*& cursor, JSON_ERR_CODE& errCode)
 		}
 		else
 		{
-			if (cursor[0] == '\\')
+			if (cursor [0] == '\\')
 			{
 				insideScape = true;
 			}
 			else
 			{
-				retVal.push_back (cursor[0]);
+				retVal.push_back (cursor [0]);
 			}
 		}
 		cursor++;
 	}
 
-	if (insideScape || remainingUChars > 0 || cursor[0] != '"')
+	if (insideScape || remainingUChars > 0 || cursor [0] != '"')
 	{
 		errCode = JSON_ERR_CODE::WRONG_STRING_FORMAT;
 	}
@@ -218,16 +219,16 @@ std::string JSONParserPriv::getNumber (const char*& cursor, JSON_ERR_CODE& errCo
 	isInt = true;
 
 	//Opcionalmente puede empezar por el signo -
-	if (cursor[0] == '-')
+	if (cursor [0] == '-')
 	{
 		retVal.push_back ('-');
 		cursor++;
 	}
 
 	//Primero viene la parte entera
-	while (std::isdigit (cursor[0]))
+	while (std::isdigit (cursor [0]))
 	{
-		retVal.push_back (cursor[0]);
+		retVal.push_back (cursor [0]);
 		cursor++;
 
 		errCode = JSON_ERR_CODE::SUCCESS;
@@ -235,7 +236,7 @@ std::string JSONParserPriv::getNumber (const char*& cursor, JSON_ERR_CODE& errCo
 
 
 	//Ahora viene la fracción si es el caso
-	if (cursor[0] != '.')
+	if (cursor [0] != '.')
 	{
 		return retVal;
 	}
@@ -249,16 +250,16 @@ std::string JSONParserPriv::getNumber (const char*& cursor, JSON_ERR_CODE& errCo
 		errCode = JSON_ERR_CODE::WRONG_NUMBER_FORMAT;
 	}
 
-	while (std::isdigit (cursor[0]))
+	while (std::isdigit (cursor [0]))
 	{
-		retVal.push_back (cursor[0]);
+		retVal.push_back (cursor [0]);
 		cursor++;
 
 		errCode = JSON_ERR_CODE::SUCCESS;
 	}
 
 	//Ahora viene la parte exponencial, de ser el caso
-	if (cursor[0] != 'e' && cursor[0] != 'E')
+	if (cursor [0] != 'e' && cursor [0] != 'E')
 	{
 		return retVal;
 	}
@@ -272,15 +273,15 @@ std::string JSONParserPriv::getNumber (const char*& cursor, JSON_ERR_CODE& errCo
 	}
 
 	//Puede ser que exista (o que no), signo para el exponente
-	if (cursor[0] == '+' || cursor[0] == '-')
+	if (cursor [0] == '+' || cursor [0] == '-')
 	{
-		retVal.push_back (cursor[0]);
+		retVal.push_back (cursor [0]);
 		cursor++;
 	}
 
-	while (std::isdigit (cursor[0]))
+	while (std::isdigit (cursor [0]))
 	{
-		retVal.push_back (cursor[0]);
+		retVal.push_back (cursor [0]);
 		cursor++;
 
 		errCode = JSON_ERR_CODE::SUCCESS;
@@ -376,7 +377,7 @@ JSON_ERR_CODE JSONParserPriv::addNewObject (JSONArray & base, const char *& curs
 JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 {
 	bool waitingForValue = true;
-	if (cursor[0] != '[')
+	if (cursor [0] != '[')
 	{
 		return JSON_ERR_CODE::NO_MATCHING_OBJECT;
 	}
@@ -384,7 +385,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 	cursor++;
 
 	JSON_ERR_CODE retVal = JSON_ERR_CODE::SUCCESS;
-	while ((cursor)[0] != 0 && cursor[0] != ']')
+	while ((cursor) [0] != 0 && cursor [0] != ']')
 	{
 		if (skipWhitespace (cursor))
 		{
@@ -392,7 +393,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 		}
 		else if (waitingForValue)
 		{
-			switch (cursor[0])
+			switch (cursor [0])
 			{
 			case '[':
 				retVal = addNewArray (base, cursor);
@@ -424,7 +425,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 		}
 		else
 		{
-			if (cursor[0] == ',')
+			if (cursor [0] == ',')
 			{
 				waitingForValue = true;
 				cursor++;
@@ -437,7 +438,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
 
 	}
 
-	if (cursor[0] == ']')
+	if (cursor [0] == ']')
 	{
 		cursor++;
 		return JSON_ERR_CODE::SUCCESS;
@@ -542,7 +543,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 
 	std::string key;
 
-	if (cursor[0] != '{')
+	if (cursor [0] != '{')
 	{
 		return JSON_ERR_CODE::NO_MATCHING_OBJECT;
 	}
@@ -550,7 +551,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 	cursor++;
 
 	JSON_ERR_CODE retVal = JSON_ERR_CODE::SUCCESS;
-	while ((cursor)[0] != 0 && cursor[0] != '}')
+	while ((cursor) [0] != 0 && cursor [0] != '}')
 	{
 		if (skipWhitespace (cursor))
 		{
@@ -568,7 +569,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 		}
 		else if (waitingForValue)
 		{
-			switch (cursor[0])
+			switch (cursor [0])
 			{
 			case '[':
 				retVal = addNewArray (object, key.c_str (), cursor);
@@ -602,7 +603,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 		else
 		{
 			//If it is neither a whitespace, nor the key, nor the value, then 
-			switch (cursor[0])
+			switch (cursor [0])
 			{
 			case ',':
 				if (keyIsFilled)
@@ -635,7 +636,7 @@ JSON_ERR_CODE JSONParserPriv::parse (JSONObject& object, const char*& cursor)
 	}
 
 
-	if (cursor[0] == '}')
+	if (cursor [0] == '}')
 	{
 		cursor++;
 		return JSON_ERR_CODE::SUCCESS;
