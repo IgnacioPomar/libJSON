@@ -19,13 +19,20 @@
 #include "JSONParserPriv.h"
 
 
+const char utf8Bom [] = "\xEF\xBB\xBF";
 
-JSON_ERR_CODE JSONParser::parseFromFile (JSONBase & base, const char * jsonFileName)
+JSON_ERR_CODE JSONParser::parseFromFile (JSONBase& base, const char* jsonFileName)
 {
 	std::ifstream ifs (jsonFileName, std::ios::in);
 	if (ifs.is_open ())
 	{
 		std::string str (std::istreambuf_iterator<char>{ifs}, {});
+
+		if (str.compare (0, 3, utf8Bom) == 0)
+		{
+			str.erase (0, 3);
+		}
+
 		return parse (base, str.c_str ());
 	}
 	else
@@ -37,9 +44,9 @@ JSON_ERR_CODE JSONParser::parseFromFile (JSONBase & base, const char * jsonFileN
 
 
 
-JSON_ERR_CODE JSONParser::parse (JSONBase & base, const char * jsonTxt)
+JSON_ERR_CODE JSONParser::parse (JSONBase& base, const char* jsonTxt)
 {
-	const char * cursor = jsonTxt;
+	const char* cursor = jsonTxt;
 	JSONParserPriv::skipWhitespace (cursor);
 	if (base.getType () == JSON_TYPE::JARR)
 	{
@@ -58,7 +65,7 @@ JSON_ERR_CODE JSONParser::parse (JSONBase & base, const char * jsonTxt)
 /**
 * Advances the position till we find a non whitespace char
 */
-bool JSONParserPriv::skipWhitespace (const char *& cursor)
+bool JSONParserPriv::skipWhitespace (const char*& cursor)
 {
 	bool retVal = false;
 	while (cursor [0] == ' ' || cursor [0] == '\t' || cursor [0] == '\r' || cursor [0] == '\n')
@@ -74,9 +81,9 @@ bool JSONParserPriv::skipWhitespace (const char *& cursor)
 /**
 * check if we hava a null string and advance the cursor till the end
 */
-bool JSONParserPriv::checkNull (const char *& cursor, JSON_ERR_CODE & errCode)
+bool JSONParserPriv::checkNull (const char*& cursor, JSON_ERR_CODE& errCode)
 {
-	const char * tmp = strNull;
+	const char* tmp = strNull;
 
 	errCode = JSON_ERR_CODE::SUCCESS;
 	while (tmp [0] != 0)
@@ -96,10 +103,10 @@ bool JSONParserPriv::checkNull (const char *& cursor, JSON_ERR_CODE & errCode)
 	return true;
 }
 
-bool JSONParserPriv::checkBool (const char *& cursor, JSON_ERR_CODE & errCode)
+bool JSONParserPriv::checkBool (const char*& cursor, JSON_ERR_CODE& errCode)
 {
 	bool retVal = (cursor [0] == 't');
-	const char * tmp = (retVal) ? strTrue : strFalse;
+	const char* tmp = (retVal) ? strTrue : strFalse;
 
 	errCode = JSON_ERR_CODE::SUCCESS;
 	while (tmp [0] != 0)
@@ -330,7 +337,7 @@ JSON_ERR_CODE JSONParserPriv::addNewNumber (JSONArray& base, const char*& cursor
 
 
 
-JSON_ERR_CODE JSONParserPriv::addNewBoolean (JSONArray & base, const char *& cursor)
+JSON_ERR_CODE JSONParserPriv::addNewBoolean (JSONArray& base, const char*& cursor)
 {
 	JSON_ERR_CODE retVal;
 	base.put (checkBool (cursor, retVal));
@@ -338,7 +345,7 @@ JSON_ERR_CODE JSONParserPriv::addNewBoolean (JSONArray & base, const char *& cur
 }
 
 
-JSON_ERR_CODE JSONParserPriv::addNewNull (JSONArray & base, const char *& cursor)
+JSON_ERR_CODE JSONParserPriv::addNewNull (JSONArray& base, const char*& cursor)
 {
 	JSON_ERR_CODE retVal;
 	if (checkNull (cursor, retVal))
@@ -349,7 +356,7 @@ JSON_ERR_CODE JSONParserPriv::addNewNull (JSONArray & base, const char *& cursor
 }
 
 
-JSON_ERR_CODE JSONParserPriv::addNewArray (JSONArray & base, const char *& cursor)
+JSON_ERR_CODE JSONParserPriv::addNewArray (JSONArray& base, const char*& cursor)
 {
 	JSONArray jarr;
 	JSON_ERR_CODE retVal = parse (jarr, cursor);
@@ -361,7 +368,7 @@ JSON_ERR_CODE JSONParserPriv::addNewArray (JSONArray & base, const char *& curso
 	return retVal;
 }
 
-JSON_ERR_CODE JSONParserPriv::addNewObject (JSONArray & base, const char *& cursor)
+JSON_ERR_CODE JSONParserPriv::addNewObject (JSONArray& base, const char*& cursor)
 {
 	JSONObject jObj;
 	JSON_ERR_CODE retVal = parse (jObj, cursor);
@@ -374,7 +381,7 @@ JSON_ERR_CODE JSONParserPriv::addNewObject (JSONArray & base, const char *& curs
 	return retVal;
 }
 
-JSON_ERR_CODE JSONParserPriv::parse (JSONArray & base, const char *& cursor)
+JSON_ERR_CODE JSONParserPriv::parse (JSONArray& base, const char*& cursor)
 {
 	bool waitingForValue = true;
 	if (cursor [0] != '[')
