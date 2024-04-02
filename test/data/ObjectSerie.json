@@ -1,0 +1,7 @@
+﻿{
+  "obj1": [ "red", "blue" ],
+  "obj2": [ "green", "purple" ],
+  "obj3": [ "wine", "water" ],
+  "4": "#f00",
+  "z": { "theme": "magicForest" }
+}

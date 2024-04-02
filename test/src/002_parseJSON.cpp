@@ -34,33 +34,6 @@ UNIT_TEST_CASE (TestLoadJSON)
 
 		UNIT_CHECK (JSON_ERR_CODE::SUCCESS == JSONParser::parseFromFile (jobj, "../test/data/simpleDtaWithSpaces.json"));
 		UNIT_CHECK (0 == jobj.toString ().compare (jsonTxt));
-
-		//Iterate througt the array
-		PtrJSONBase base = jobj.get ("arr");
-
-		if (UNIT_CHECK (base->getType () == JSON_TYPE::JARR))
-		{
-			int count = 0;
-			bool workedAsExpected = true;
-
-			JSONArray arr = base->getAsArray ();
-			for (auto objElem : arr)
-			{
-				if (objElem->getType () == JSON_TYPE::JOBJ)
-				{
-					int lid = objElem->getAsObject ().get ("lid")->getAsInt ();
-					workedAsExpected = workedAsExpected && lid == count;
-					count++;
-				}
-				else
-				{
-					workedAsExpected = false;
-				}
-
-			}
-			UNIT_CHECK (workedAsExpected);
-			UNIT_CHECK (count == NUM_OBJECTS_IN_PLAIN_DTA_ARRAY);
-		}
 	}
 }
 

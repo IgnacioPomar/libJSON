@@ -2,7 +2,7 @@
 #include "JSONObject.h"
 #include "JSONArray.h"
 
-void JSONObject::put (const char* key, const char * value)
+void JSONObject::put (const char* key, const char* value)
 {
 	std::string str (value);
 	container->emplace (key, std::make_shared<JSONString> (str));
@@ -25,7 +25,7 @@ void JSONObject::put (const char* key, int value)
 	container->emplace (key, std::make_shared<JSONInt> (value));
 }
 
-void JSONObject::put (const char * key, double value)
+void JSONObject::put (const char* key, double value)
 {
 	container->emplace (key, std::make_shared<JSONDouble> (value));
 }
@@ -42,7 +42,7 @@ void JSONObject::put (const char* key, JSONObject& obj)
 
 
 
-PtrJSONBase JSONObject::get (const char * key)
+PtrJSONBase JSONObject::get (const char* key)
 {
 	auto search = container->find (key);
 	if (search != container->end ())
@@ -55,29 +55,29 @@ PtrJSONBase JSONObject::get (const char * key)
 	}
 }
 
-bool JSONObject::getBool (const char * key)
+bool JSONObject::getBool (const char* key)
 {
 	return this->get (key)->getAsBool ();
 }
-int JSONObject::getInt (const char * key)
+int JSONObject::getInt (const char* key)
 {
 	return this->get (key)->getAsInt ();
 }
-double JSONObject::getDouble (const char * key)
+double JSONObject::getDouble (const char* key)
 {
 	return this->get (key)->getAsDouble ();
 }
-const char * JSONObject::getString (const char * key)
+const char* JSONObject::getString (const char* key)
 {
 	return this->get (key)->getAsString ();
 }
 
-JSONArray JSONObject::getArray (const char * key)
+JSONArray JSONObject::getArray (const char* key)
 {
 	return this->get (key)->getAsArray ();
 }
 
-JSONObject JSONObject::getObject (const char * key)
+JSONObject JSONObject::getObject (const char* key)
 {
 	return this->get (key)->getAsObject ();
 }
@@ -118,3 +118,61 @@ JSON_TYPE JSONObject::getType () const
 {
 	return JSON_TYPE::JOBJ;
 }
+
+
+
+
+//---------------- Allow iterating over the hidden container --------------
+//See  https://internalpointers.com/post/writing-custom-iterators-modern-cpp
+JSONObject::Iterator JSONObject::begin ()
+{
+	return JSONObject::Iterator (container->begin ());
+}
+
+JSONObject::Iterator JSONObject::end ()
+{
+	return JSONObject::Iterator (container->end ());
+}
+
+
+JSONObject::Element& JSONObject::Iterator::operator*()
+{
+	return elem;
+}
+
+JSONObject::Iterator& JSONObject::Iterator::operator++()
+{
+	elem.it++;
+	return *this;
+}
+
+
+bool operator==(const JSONObject::Iterator& a, const JSONObject::Iterator& b)
+{
+	return a.elem.it == b.elem.it;
+}
+
+bool operator!=(const JSONObject::Iterator& a, const JSONObject::Iterator& b)
+{
+	return a.elem.it != b.elem.it;
+}
+
+
+JSONObject::Iterator::Iterator (ObjContainer::iterator it) : elem (it)
+{
+}
+
+JSONObject::Element::Element (ObjContainer::iterator it) : it (it)
+{
+}
+
+std::string JSONObject::Element::key () const
+{
+	return it->first;
+}
+
+PtrJSONBase& JSONObject::Element::value () const
+{
+	return it->second;
+}
+

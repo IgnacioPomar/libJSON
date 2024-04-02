@@ -26,6 +26,9 @@
     <ClCompile Include="..\test\src\003_parseTypesJSON.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\test\src\004_Iterate.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\test\src\tester_pragmalib.h">
@@ -49,6 +52,9 @@
       <Filter>testData</Filter>
     </None>
     <None Include="..\test\data\simpleDtaWithSpaces.json">
+      <Filter>testData</Filter>
+    </None>
+    <None Include="..\test\data\ObjectSerie.json">
       <Filter>testData</Filter>
     </None>
   </ItemGroup>

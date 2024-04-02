@@ -164,6 +164,7 @@
     <ClCompile Include="..\test\src\001_CreateJSON.cpp" />
     <ClCompile Include="..\test\src\002_parseJSON.cpp" />
     <ClCompile Include="..\test\src\003_parseTypesJSON.cpp" />
+    <ClCompile Include="..\test\src\004_Iterate.cpp" />
     <ClCompile Include="..\test\src\maintester.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\test\data\arrayOfObjects.json" />
+    <None Include="..\test\data\ObjectSerie.json" />
     <None Include="..\test\data\simpleArray.json" />
     <None Include="..\test\data\simpleDtaWithSpaces.json" />
     <None Include="..\test\data\simpleObject.json" />

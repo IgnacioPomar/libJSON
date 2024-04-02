@@ -39,20 +39,20 @@ public:
 	LIBJSON_API void put (bool value);
 	LIBJSON_API void put (int value);
 	LIBJSON_API void put (double value);
-	LIBJSON_API void put (const char * value);
+	LIBJSON_API void put (const char* value);
 	LIBJSON_API void put (JSONArray& arr);
 	LIBJSON_API void put (JSONObject& obj);
 
 	LIBJSON_API PtrJSONBase get (int idx);
 	LIBJSON_API int length ();
-	LIBJSON_API JSONBase & front ();
+	LIBJSON_API JSONBase& front ();
 
-	//---------------- Para Iterar por la clase --------------
+	//---------------- Make it iterable --------------
 	struct Iterator
 	{
 		Iterator (ArrContainer::iterator it);
 
-		LIBJSON_API PtrJSONBase & operator*() const;
+		LIBJSON_API PtrJSONBase& operator*() const;
 		//PtrJSONBase * operator->();
 		LIBJSON_API Iterator& operator++();
 		//Iterator operator++(int) { Iterator tmp = *this; ++(*this); return tmp; }
