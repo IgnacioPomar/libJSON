@@ -1,9 +1,9 @@
-﻿/*********************************************************************************************
+/*********************************************************************************************
 *	Name        : 001_CreateJSON.cpp
 *  Description : Test creating JSON from vars
 ********************************************************************************************/
 
-#include <TinyCppUnit/TinyCppUnit.h>
+#include <gtest/gtest.h>
 
 #include "libJSON.h"
 
@@ -29,9 +29,9 @@ void fillObjWithSimpleDta (JSONObject* jobj)
 }
 
 
-UNIT_TEST_CASE(TestCreateJSON)
+TEST (LibJSON, TestCreateJSON)
 {
 	JSONObject jobj;
 	fillObjWithSimpleDta (&jobj);
-	UNIT_CHECK (0 == jobj.toString ().compare (jsonTxt));
+	EXPECT_TRUE (0 == jobj.toString ().compare (jsonTxt));
 }

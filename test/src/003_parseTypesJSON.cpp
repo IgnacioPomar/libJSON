@@ -1,43 +1,45 @@
-﻿/*********************************************************************************************
+/*********************************************************************************************
 *	Name        : 003_perseTypesJSON.cpp
 *  Description : Test parsing all types of the JSON
 ********************************************************************************************/
 
 #include <string>
-#include <TinyCppUnit/TinyCppUnit.h>
+#include <gtest/gtest.h>
 
 #include "libJSON.h"
 #include "JSONParseUchar.h"
 
 
+static const std::string kTestDataDir = TEST_DATA_DIR;
 
-UNIT_TEST_CASE (TestJSONTypes)
+
+TEST (LibJSON, TestJSONTypes)
 {
 	JSONObject jobj;
 
 
-	UNIT_REQUIRE (JSON_ERR_CODE::SUCCESS == JSONParser::parseFromFile (jobj, "../test/data/withAllDataTypes.json"));
+	ASSERT_TRUE (JSON_ERR_CODE::SUCCESS == JSONParser::parseFromFile (jobj, (kTestDataDir + "/withAllDataTypes.json").c_str ()));
 
 
 	//Existing fields
-	UNIT_CHECK (jobj.get ("id")->getType () == JSON_TYPE::JSTRING);
-	UNIT_CHECK (jobj.get ("name")->getType () == JSON_TYPE::JSTRING);
-	UNIT_CHECK (jobj.get ("isYummy")->getType () == JSON_TYPE::JBOOL);
-	UNIT_CHECK (jobj.get ("stock")->getType () == JSON_TYPE::JINT);
-	UNIT_CHECK (jobj.get ("price")->getType () == JSON_TYPE::JDOUBLE);
-	UNIT_CHECK (jobj.get ("lastOvenError")->getType () == JSON_TYPE::JNULL);
-	UNIT_CHECK (jobj.get ("images")->getType () == JSON_TYPE::JARR);
-	UNIT_CHECK (jobj.get ("visual")->getType () == JSON_TYPE::JOBJ);
+	EXPECT_TRUE (jobj.get ("id")->getType () == JSON_TYPE::JSTRING);
+	EXPECT_TRUE (jobj.get ("name")->getType () == JSON_TYPE::JSTRING);
+	EXPECT_TRUE (jobj.get ("isYummy")->getType () == JSON_TYPE::JBOOL);
+	EXPECT_TRUE (jobj.get ("stock")->getType () == JSON_TYPE::JINT);
+	EXPECT_TRUE (jobj.get ("price")->getType () == JSON_TYPE::JDOUBLE);
+	EXPECT_TRUE (jobj.get ("lastOvenError")->getType () == JSON_TYPE::JNULL);
+	EXPECT_TRUE (jobj.get ("images")->getType () == JSON_TYPE::JARR);
+	EXPECT_TRUE (jobj.get ("visual")->getType () == JSON_TYPE::JOBJ);
 
 	//Not existing fiels
-	UNIT_CHECK (jobj.get ("noExists")->getType () == JSON_TYPE::JNULL);
+	EXPECT_TRUE (jobj.get ("noExists")->getType () == JSON_TYPE::JNULL);
 
 }
 
 
 
 
-UNIT_TEST_CASE (TestEmbeddedUnicode)
+TEST (LibJSON, TestEmbeddedUnicode)
 {
 	//Check Parse one unicode char
 	{
@@ -46,7 +48,7 @@ UNIT_TEST_CASE (TestEmbeddedUnicode)
 
 		std::string parsed = JSONParseUchar::getUTF8Char (ucharStr);
 
-		UNIT_CHECK (parsed.compare (utf8Str) == 0);
+		EXPECT_TRUE (parsed.compare (utf8Str) == 0);
 	}
 
 
@@ -56,14 +58,16 @@ UNIT_TEST_CASE (TestEmbeddedUnicode)
 		std::string utf8String = "\x4C\x65\xC3\xB1\x61\x3a\xC3\xA1\xC3\xA9\xC3\xAD\xC3\xB3\xC3\xBA";
 
 		JSONObject jobj;
-		UNIT_CHECK (JSON_ERR_CODE::SUCCESS == JSONParser::parse (jobj, jsonString.c_str ()));
+		EXPECT_TRUE (JSON_ERR_CODE::SUCCESS == JSONParser::parse (jobj, jsonString.c_str ()));
 
 		PtrJSONBase base = jobj.get ("str");
 
-		if (UNIT_CHECK (base->getType () == JSON_TYPE::JSTRING))
+		bool isString = (base->getType () == JSON_TYPE::JSTRING);
+		EXPECT_TRUE (isString);
+		if (isString)
 		{
 			std::string parsed (base->getAsString ());
-			UNIT_CHECK (parsed.compare (utf8String) == 0);
+			EXPECT_TRUE (parsed.compare (utf8String) == 0);
 		}
 	}
 }
