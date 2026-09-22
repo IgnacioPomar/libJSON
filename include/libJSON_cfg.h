@@ -7,9 +7,7 @@
 #ifndef _LIBJSON_CFG_H_
 #define _LIBJSON_CFG_H_
 
-//If the solution is a dinamic library (dll), we need the next macro
-#define LIBJSON_DLL
-
+//LIBJSON_DLL is defined by the build system (CMake sets it publicly when BUILD_SHARED_LIBS is ON)
 //IMPORTANT: the project who exports must have the preprocessor macro LIBJSON_EXPORTS
 
 //see http://gcc.gnu.org/wiki/Visibility
