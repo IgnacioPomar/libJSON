@@ -33,6 +33,7 @@ public:
 	LIBJSON_API JSONArray ();
 
 	LIBJSON_API std::string toString () const;
+	LIBJSON_API void appendTo (std::string& out) const;
 	LIBJSON_API JSON_TYPE getType () const;
 
 	LIBJSON_API void putNull ();

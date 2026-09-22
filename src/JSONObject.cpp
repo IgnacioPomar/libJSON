@@ -101,15 +101,26 @@ JSONObject::JSONObject (const JSONObject& other)
 
 std::string JSONObject::toString () const
 {
-	std::string retVal = "{";
-	std::string sep = "";
+	std::string retVal;
+	appendTo (retVal);
+	return retVal;
+}
+
+void JSONObject::appendTo (std::string& out) const
+{
+	out += '{';
+	bool first = true;
 	for (const auto& kv : *container)
 	{
-		retVal.append (sep).append ("\"" + kv.first + "\":").append (kv.second->toString ());
-		sep = ",";
+		if (!first) out += ',';
+		first = false;
+
+		out += '"';
+		out += kv.first;
+		out += "\":";
+		kv.second->appendTo (out);
 	}
-	retVal.append ("}");
-	return retVal;
+	out += '}';
 }
 
 

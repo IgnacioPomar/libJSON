@@ -25,6 +25,12 @@ public:
 	virtual JSON_TYPE getType () const = 0;
 	virtual std::string toString () const = 0;
 
+	// Appends this value's serialization to an existing buffer instead of returning a new
+	// string. JSONObject/JSONArray override this to serialize their whole subtree into the
+	// caller's buffer directly, avoiding one extra full-subtree string copy per tree level
+	// that toString() would otherwise cause when a container appends a child's returned string.
+	virtual void appendTo (std::string& out) const { out += toString (); }
+
 	int getAsInt () const;
 	bool getAsBool () const;
 	double getAsDouble () const;

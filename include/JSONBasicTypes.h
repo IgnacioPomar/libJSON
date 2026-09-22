@@ -27,6 +27,7 @@ public:
 
 	JSONInt (int value);
 	std::string toString () const;
+	void appendTo (std::string& out) const;
 	JSON_TYPE getType () const;
 };
 
@@ -46,6 +47,7 @@ public:
 
 	JSONBool (bool value);
 	std::string toString () const;
+	void appendTo (std::string& out) const;
 	JSON_TYPE getType () const;
 };
 
@@ -61,6 +63,7 @@ private:
 	using JSONBase::getAsInt;
 public:
 	std::string toString () const;
+	void appendTo (std::string& out) const;
 	JSON_TYPE getType () const;
 };
 
@@ -80,6 +83,7 @@ public:
 
 	JSONDouble (double value);
 	std::string toString () const;
+	void appendTo (std::string& out) const;
 	JSON_TYPE getType () const;
 };
 
@@ -98,6 +102,7 @@ public:
 
 	JSONString (std::string & value);
 	std::string toString () const;
+	void appendTo (std::string& out) const;
 	JSON_TYPE getType () const;
 };
 

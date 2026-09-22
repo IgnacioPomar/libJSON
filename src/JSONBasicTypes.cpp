@@ -13,6 +13,11 @@ std::string JSONInt::toString () const
 	return  std::to_string (value);
 }
 
+void JSONInt::appendTo (std::string& out) const
+{
+	out += std::to_string (value);
+}
+
 JSON_TYPE JSONInt::getType () const
 {
 	return JSON_TYPE::JINT;
@@ -24,6 +29,11 @@ JSONDouble::JSONDouble (double value) : value (value) {}
 std::string JSONDouble::toString () const
 {
 	return  std::to_string (value);
+}
+
+void JSONDouble::appendTo (std::string& out) const
+{
+	out += std::to_string (value);
 }
 
 JSON_TYPE JSONDouble::getType () const
@@ -39,6 +49,13 @@ std::string JSONString::toString () const
 	return "\"" + value + "\"";
 }
 
+void JSONString::appendTo (std::string& out) const
+{
+	out += '"';
+	out += value;
+	out += '"';
+}
+
 JSON_TYPE JSONString::getType () const
 {
 	return JSON_TYPE::JSTRING;
@@ -48,6 +65,11 @@ JSON_TYPE JSONString::getType () const
 std::string JSONNull::toString () const
 {
 	return std::string ("null");
+}
+
+void JSONNull::appendTo (std::string& out) const
+{
+	out += "null";
 }
 
 JSON_TYPE JSONNull::getType () const
@@ -60,6 +82,11 @@ std::string JSONBool::toString () const
 {
 	const char* ret = (value) ? "true" : "false";
 	return std::string (ret);
+}
+
+void JSONBool::appendTo (std::string& out) const
+{
+	out += (value) ? "true" : "false";
 }
 
 JSONBool::JSONBool (bool value)

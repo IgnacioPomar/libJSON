@@ -48,15 +48,23 @@ void JSONArray::put (JSONObject& obj)
 
 std::string JSONArray::toString () const
 {
-	std::string retVal = "[";
-	std::string sep = "";
+	std::string retVal;
+	appendTo (retVal);
+	return retVal;
+}
+
+void JSONArray::appendTo (std::string& out) const
+{
+	out += '[';
+	bool first = true;
 	for (const auto& kv : *container)
 	{
-		retVal.append (sep).append (kv->toString ());
-		sep = ",";
+		if (!first) out += ',';
+		first = false;
+
+		kv->appendTo (out);
 	}
-	retVal.append ("]");
-	return retVal;
+	out += ']';
 }
 
 
