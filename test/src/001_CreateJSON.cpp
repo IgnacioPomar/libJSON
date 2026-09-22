@@ -33,5 +33,5 @@ TEST (LibJSON, TestCreateJSON)
 {
 	JSONObject jobj;
 	fillObjWithSimpleDta (&jobj);
-	EXPECT_TRUE (0 == jobj.toString ().compare (jsonTxt));
+	EXPECT_TRUE (checkSimpleDtaArray (jobj));
 }
