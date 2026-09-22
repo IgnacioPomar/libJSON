@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
-#include <TinyCppUnit/TinyCppUnit.h>
+#include <gtest/gtest.h>
 
 #include "libJSON.h"
 
@@ -16,19 +16,23 @@
 
 constexpr int NUM_OBJECTS_IN_PLAIN_DTA_ARRAY = 5;
 
+static const std::string kTestDataDir = TEST_DATA_DIR;
 
-UNIT_TEST_CASE (TestIterateJSONArray)
+
+TEST (LibJSON, TestIterateJSONArray)
 {
 
 	JSONObject jobj;
 
-	JSONParser::parseFromFile (jobj, "../test/data/simpleDtaWithSpaces.json");
+	JSONParser::parseFromFile (jobj, (kTestDataDir + "/simpleDtaWithSpaces.json").c_str ());
 
 
 	//Iterate througt the array
 	PtrJSONBase base = jobj.get ("arr");
 
-	if (UNIT_CHECK (base->getType () == JSON_TYPE::JARR))
+	bool isArray = (base->getType () == JSON_TYPE::JARR);
+	EXPECT_TRUE (isArray);
+	if (isArray)
 	{
 		int count = 0;
 		bool workedAsExpected = true;
@@ -48,19 +52,19 @@ UNIT_TEST_CASE (TestIterateJSONArray)
 			}
 
 		}
-		UNIT_CHECK (workedAsExpected);
-		UNIT_CHECK (count == NUM_OBJECTS_IN_PLAIN_DTA_ARRAY);
+		EXPECT_TRUE (workedAsExpected);
+		EXPECT_TRUE (count == NUM_OBJECTS_IN_PLAIN_DTA_ARRAY);
 	}
 }
 
 
 
-UNIT_TEST_CASE (TestIterateJSONObject)
+TEST (LibJSON, TestIterateJSONObject)
 {
 
 	JSONObject jobj;
 
-	JSONParser::parseFromFile (jobj, "../test/data/ObjectSerie.json");
+	JSONParser::parseFromFile (jobj, (kTestDataDir + "/ObjectSerie.json").c_str ());
 
 	int count = 0;
 	bool workedAsExpected = true;
@@ -75,9 +79,7 @@ UNIT_TEST_CASE (TestIterateJSONObject)
 		}
 		count++;
 	}
-	UNIT_CHECK (workedAsExpected);
-	UNIT_CHECK (count == NUM_OBJECTS_IN_PLAIN_DTA_ARRAY);
+	EXPECT_TRUE (workedAsExpected);
+	EXPECT_TRUE (count == NUM_OBJECTS_IN_PLAIN_DTA_ARRAY);
 
 }
-
-

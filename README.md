@@ -9,10 +9,9 @@ I wanted to have similar sintax than the reference Java library...
 And here we are, a C++17 library.
 
 ## Requirements
-The solution brings two projects:
+The repo brings two build targets:
 - The library itself has no dependency.
-- The tester project uses [TinyCppUnit](https://github.com/IgnacioPomar/TinyCppUnit). 
-
+- The tester target uses [GoogleTest](https://github.com/google/googletest), fetched via Conan.
 
 ## Authors
 - Ignacio Pomar Ballestero
@@ -20,7 +19,24 @@ The solution brings two projects:
 
 
 ## Building
-At this stage, only with visual studio
+Requires CMake (>= 3.21) and [Conan](https://conan.io/) (2.x).
+
+```sh
+conan profile detect --force   # only needed once
+conan install . --output-folder=build --build=missing -s compiler.cppstd=17
+cmake --preset conan-release
+cmake --build --preset conan-release
+ctest --preset conan-release   # or run build/build/Release/test/libJSONTester directly
+```
+
+Pass `-o shared=True` to `conan install` to build libJSON as a shared library.
+
+The library is also packaged as a Conan recipe, so it can be built, tested and
+installed into the local Conan cache with:
+
+```sh
+conan create . -s compiler.cppstd=17
+```
 
 ## License
 This is free and unencumbered software released into the public domain.
