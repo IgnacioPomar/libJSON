@@ -2,11 +2,85 @@
 Just another JSon library
 
 ## Motivation
-I wanted a lightweight, multiplatform, with no external dependencies library
-(Not a header, but a library) capable of handle big JSON files. As a bonus track, 
-I wanted to have similar sintax than the reference Java library...
+This project was born as a way to try out C++17 and `shared_ptr`-based tree
+structures, with no real intention of production use. From there it grew into
+a lightweight, multiplatform, dependency-free library (not a header, but a
+library) capable of handling big JSON files. As a bonus track, I wanted to
+have similar syntax to the reference Java library...
 
 And here we are, a C++17 library.
+
+## How does it compare?
+
+Since this is a learning project, it made sense to see where it actually
+stands against established C++ JSON libraries. [`benchmarks/`](benchmarks/)
+compares write (build a DOM + serialize) and read (parse + walk the DOM)
+performance against:
+
+- [nlohmann/json](https://github.com/nlohmann/json)
+- [RapidJSON](https://github.com/Tencent/rapidjson)
+- [simdjson](https://github.com/simdjson/simdjson) (read-only in this
+  comparison — it has no DOM-building/writer API)
+- [glaze](https://github.com/stephenberry/glaze), compared through its
+  generic DOM type (`glz::json_t`), not its much faster reflection-over-structs
+  mode, to keep the comparison DOM-to-DOM (see
+  [`benchmarks/README.md`](benchmarks/README.md) for why)
+
+Three dataset sizes are used (random-walk OHLC minute candles grouped by
+hour): 10 minutes (small), 1 day (medium), 1 week (large). Minimum time over
+30 rounds, in microseconds:
+
+Full methodology, how to run it, and a usability annex with real (compiled
+and run) code for each library — parsing, modifying a field, writing to
+disk, and each library's own standout use case — are in
+[`benchmarks/README.md`](benchmarks/README.md).
+
+**Write** (build DOM + serialize)
+
+| Dataset | libJSON | nlohmann/json | RapidJSON | glaze (json_t) |
+|---|---:|---:|---:|---:|
+| Small (10 candles)      | 34.0     | 21.0     | 4.6     | 8.0     |
+| Medium (1 440 candles)  | 4 388.1  | 3 042.3  | 1 238.4 | 1 106.5 |
+| Large (10 080 candles)  | 32 568.2 | 21 225.0 | 6 273.6 | 9 714.9 |
+
+**Read** (parse + walk DOM)
+
+| Dataset | libJSON | nlohmann/json | RapidJSON | glaze (json_t) | simdjson |
+|---|---:|---:|---:|---:|---:|
+| Small (10 candles)      | 21.1     | 26.4     | 3.9     | 7.0     | 3.3     |
+| Medium (1 440 candles)  | 2 632.2  | 3 737.0  | 459.8   | 1 077.3 | 376.3   |
+| Large (10 080 candles)  | 19 772.3 | 27 254.9 | 3 321.3 | 9 866.3 | 2 820.1 |
+
+`libJSON`'s containers are `std::vector<std::pair<std::string, PtrJSONBase>>`
+for objects and `std::vector<PtrJSONBase>` for arrays — no raw `new`/`delete`
+anywhere, same as glaze's criterion. Small, linearly-scanned vectors beat a
+hash map for the handful of keys a typical JSON object has, and a vector
+beats a linked list for both iteration and (real, O(1)) random access. That
+alone makes `libJSON` **read faster than nlohmann/json at every size**
+tested. Writing is still the slowest of the four: every node is still its
+own heap allocation (one `shared_ptr` per value, via `make_shared`), which
+is exactly the C++17/`shared_ptr` experiment this project set out to run.
+
+### Which one would I actually pick?
+
+If I had to pick one of these for real use, I'd lean towards **glaze**,
+mainly for memory-safety reasons: its JSON read/write path is built entirely
+on standard containers (`std::vector`, `std::string`, `std::map`,
+`std::variant`), and the few raw `new` calls that exist anywhere in the
+library live outside the JSON hot path and are wrapped in `std::shared_ptr`
+with a custom deleter (RAII, not a bare owning pointer) — the actual
+serialization code has no manual memory management at all. It's also backed
+by a dedicated [`fuzzing/`](https://github.com/stephenberry/glaze/tree/master/fuzzing)
+suite wired to OSS-Fuzz that specifically targets roundtrip bugs.
+
+That said, I'm genuinely impressed by **RapidJSON**'s craftsmanship: 11+
+years of battle-testing at Tencent scale, a real `unittest`/`perftest` suite,
+and a CI that runs under Valgrind. Its speed comes precisely from a
+hand-written arena allocator (`RAPIDJSON_NEW`/`RAPIDJSON_DELETE`,
+`malloc`/`realloc`/`free`), and it does it carefully and consistently. But
+for my own criterion — memory safety first — I still prefer the fact that
+glaze's code has no `new` in it at all over a library that manages memory by
+hand, however well it does so.
 
 ## Requirements
 The repo brings two build targets:

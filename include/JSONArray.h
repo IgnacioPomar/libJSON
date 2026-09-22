@@ -7,14 +7,13 @@
 #pragma once
 #ifndef _JSON_ARRAY_
 #define _JSON_ARRAY_
-#include <list>
-#include <iterator>
+#include <vector>
 
 #include "libJSON_cfg.h"
 #include "JSONBase.h"
 
 
-typedef std::list<PtrJSONBase> ArrContainer;
+typedef std::vector<PtrJSONBase> ArrContainer;
 
 class  JSONArray : public JSONBase
 {
@@ -33,6 +32,7 @@ public:
 	LIBJSON_API JSONArray ();
 
 	LIBJSON_API std::string toString () const;
+	LIBJSON_API void appendTo (std::string& out) const;
 	LIBJSON_API JSON_TYPE getType () const;
 
 	LIBJSON_API void putNull ();

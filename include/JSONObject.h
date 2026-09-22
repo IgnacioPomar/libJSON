@@ -8,13 +8,17 @@
 #ifndef _JSON_OBJECT_
 #define _JSON_OBJECT_
 
-#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "libJSON_cfg.h"
 #include "JSONBase.h"
 
 
-typedef std::unordered_map<std::string, PtrJSONBase> ObjContainer;
+// A small, linearly-scanned vector of pairs outperforms a hash map for the handful of
+// keys a typical JSON object has (no hashing, no bucket indirection, cache-friendly),
+// at the cost of O(n) lookups for objects with many keys.
+typedef std::vector<std::pair<std::string, PtrJSONBase>> ObjContainer;
 
 class JSONObject : public JSONBase
 {
@@ -34,6 +38,7 @@ public:
 	LIBJSON_API JSONObject ();
 
 	LIBJSON_API std::string toString () const;
+	LIBJSON_API void appendTo (std::string& out) const;
 	LIBJSON_API JSON_TYPE getType () const;
 
 	LIBJSON_API void putNull (const char* key);

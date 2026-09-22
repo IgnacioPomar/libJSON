@@ -26,7 +26,7 @@ TEST (LibJSON, TestLoadJSON)
 
 
 		EXPECT_TRUE (JSON_ERR_CODE::SUCCESS == JSONParser::parse (jobj, jsonTxt));
-		EXPECT_TRUE (0 == jobj.toString ().compare (jsonTxt));
+		EXPECT_TRUE (checkSimpleDtaArray (jobj));
 	}
 
 
@@ -35,7 +35,7 @@ TEST (LibJSON, TestLoadJSON)
 		JSONObject jobj;
 
 		EXPECT_TRUE (JSON_ERR_CODE::SUCCESS == JSONParser::parseFromFile (jobj, (kTestDataDir + "/simpleDtaWithSpaces.json").c_str ()));
-		EXPECT_TRUE (0 == jobj.toString ().compare (jsonTxt));
+		EXPECT_TRUE (checkSimpleDtaArray (jobj));
 	}
 }
 
