@@ -6,6 +6,8 @@
 CMakeUserPresets.json
 /test_package/build
 /test_package/CMakeUserPresets.json
+/benchmarks/build
+/benchmarks/CMakeUserPresets.json
 
 /.vs
 /bin
