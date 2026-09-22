@@ -2,57 +2,67 @@
 #include "JSONObject.h"
 #include "JSONArray.h"
 
+namespace
+{
+	// Matches the previous std::unordered_map::emplace() semantics: if the key is
+	// already present, the new value is discarded and the existing one is kept.
+	void emplaceIfAbsent (ObjContainer& container, const char* key, PtrJSONBase value)
+	{
+		for (const auto& kv : container)
+		{
+			if (kv.first == key) return;
+		}
+		container.emplace_back (key, std::move (value));
+	}
+}
+
 void JSONObject::put (const char* key, const char* value)
 {
 	std::string str (value);
-	container->emplace (key, std::make_shared<JSONString> (str));
+	emplaceIfAbsent (*container, key, std::make_shared<JSONString> (str));
 }
 
 
 
 void JSONObject::putNull (const char* key)
 {
-	container->emplace (key, std::make_shared<JSONNull> ());
+	emplaceIfAbsent (*container, key, std::make_shared<JSONNull> ());
 }
 
 void JSONObject::put (const char* key, bool value)
 {
-	container->emplace (key, std::make_shared<JSONBool> (value));
+	emplaceIfAbsent (*container, key, std::make_shared<JSONBool> (value));
 }
 
 void JSONObject::put (const char* key, int value)
 {
-	container->emplace (key, std::make_shared<JSONInt> (value));
+	emplaceIfAbsent (*container, key, std::make_shared<JSONInt> (value));
 }
 
 void JSONObject::put (const char* key, double value)
 {
-	container->emplace (key, std::make_shared<JSONDouble> (value));
+	emplaceIfAbsent (*container, key, std::make_shared<JSONDouble> (value));
 }
 
 void JSONObject::put (const char* key, JSONArray& arr)
 {
-	container->emplace (key, std::make_shared<JSONArray> (arr));
+	emplaceIfAbsent (*container, key, std::make_shared<JSONArray> (arr));
 }
 
 void JSONObject::put (const char* key, JSONObject& obj)
 {
-	container->emplace (key, std::make_shared<JSONObject> (obj));
+	emplaceIfAbsent (*container, key, std::make_shared<JSONObject> (obj));
 }
 
 
 
 PtrJSONBase JSONObject::get (const char* key)
 {
-	auto search = container->find (key);
-	if (search != container->end ())
+	for (const auto& kv : *container)
 	{
-		return search->second;
+		if (kv.first == key) return kv.second;
 	}
-	else
-	{
-		return std::make_shared<JSONNull> ();
-	}
+	return std::make_shared<JSONNull> ();
 }
 
 bool JSONObject::getBool (const char* key)
