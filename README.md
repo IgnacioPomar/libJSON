@@ -30,6 +30,11 @@ Three dataset sizes are used (random-walk OHLC minute candles grouped by
 hour): 10 minutes (small), 1 day (medium), 1 week (large). Minimum time over
 30 rounds, in microseconds:
 
+Full methodology, how to run it, and a usability annex with real (compiled
+and run) code for each library — parsing, modifying a field, writing to
+disk, and each library's own standout use case — are in
+[`benchmarks/README.md`](benchmarks/README.md).
+
 **Write** (build DOM + serialize)
 
 | Dataset | libJSON | nlohmann/json | RapidJSON | glaze (json_t) |
